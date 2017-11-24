@@ -7,6 +7,7 @@
 #include <SPI.h>
 #include <SD.h>
 #include <Adafruit_ILI9341.h>
+#include "lcd_image.h"
 
 #define TFT_DC 9
 #define TFT_CS 10
