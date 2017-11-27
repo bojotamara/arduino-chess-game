@@ -31,21 +31,21 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 uint16_t BROWN = tft.color565(139,69,19);
 uint16_t BEIGE = tft.color565(205,133,63);
 
-//#TODO: add these files to the sd card
 // images of the pieces
-lcd_image_t whitePawnImg = {"whitepawn.lcd", 30 , 30};
-lcd_image_t whiteRookImg = {"whiterook.lcd", 30 , 30};
-lcd_image_t whiteBishopImg = {"whitebishop.lcd", 30 , 30};
-lcd_image_t whiteKnightImg = {"whiteknight.lcd", 30 , 30};
-lcd_image_t whiteKingImg = {"whiteking.lcd", 30 , 30};
-lcd_image_t whiteQueenImg = {"whitequeen.lcd", 30 , 30};
+lcd_image_t wPawnImg = {"icons/wpawn.lcd", 25 , 25};
+lcd_image_t wRookImg = {"icons/wrook.lcd", 25 , 25};
+lcd_image_t wBishopImg = {"icons/wbishop.lcd", 25 , 25};
+lcd_image_t wKnightImg = {"icons/wknight.lcd", 25 , 25};
+lcd_image_t wKingImg = {"icons/wking.lcd", 25 , 25};
+lcd_image_t wQueenImg = {"icons/wqueen.lcd", 25 , 25};
 
-lcd_image_t blackPawnImg = {"blackpawn.lcd", 30 , 30};
-lcd_image_t blackRookImg = {"blackrook.lcd", 30 , 30};
-lcd_image_t blackBishopImg = {"blackbishop.lcd", 30 , 30};
-lcd_image_t blackKnightImg = {"blackknight.lcd", 30 , 30};
-lcd_image_t blackKingImg = {"blackking.lcd", 30 , 30};
-lcd_image_t blackQueenImg = {"blackqueen.lcd", 30 , 30};
+lcd_image_t bPawnImg = {"icons/bpawn.lcd", 25 , 25};
+lcd_image_t bRookImg = {"icons/brook.lcd", 25 , 25};
+lcd_image_t bBishopImg = {"icons/bbishop.lcd", 25 , 25};
+lcd_image_t bKnightImg = {"icons/bknight.lcd", 25 , 25};
+lcd_image_t bKingImg = {"icons/bking.lcd", 25 , 25};
+lcd_image_t bQueenImg = {"icons/bqueen.lcd", 25 , 25};
+
 
 lcd_image_t yegImage = { "yeg-big.lcd", 2048, 2048 };
 
@@ -150,9 +150,9 @@ void fillBoardArray() {
 
 }
 
-
-void drawPiece() {
-
+//#TODO: add 3rd param, piecetype, once we get images
+void drawPiece(int squarex, int squarey, lcd_image_t piecetype) {
+	lcd_image_draw(&piecetype, &tft,0,0,(BOARD_SIZE/8)*squarex ,(BOARD_SIZE/8)*squarey,25, 25);
 }
 
 /*
@@ -228,6 +228,13 @@ void setup() {
 	tft.begin();
 	pinMode(JOY_SEL, INPUT_PULLUP);
 
+	Serial.print("Initializing SD card...");
+	if (!SD.begin(SD_CS)) {
+			Serial.println("failed! Is it inserted properly?");
+			while (true) {}
+		}
+		Serial.println("OK!");
+
 	tft.setRotation(3);
 
 	drawBoard();
@@ -243,7 +250,7 @@ int main() {
 
 		// when joystick is pressed
 		if (digitalRead(2) == 0) {
-			colorSquare(selectedX,selectedY);
+			drawPiece(selectedX,selectedY,bPawnImg);
 			highlightSquare(selectedX,selectedY);
 		}
 
