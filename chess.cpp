@@ -46,9 +46,6 @@ lcd_image_t bKnightImg = {"icons/bknight.lcd", 25 , 25};
 lcd_image_t bKingImg = {"icons/bking.lcd", 25 , 25};
 lcd_image_t bQueenImg = {"icons/bqueen.lcd", 25 , 25};
 
-
-lcd_image_t yegImage = { "yeg-big.lcd", 2048, 2048 };
-
 // hold the position of square selected
 int selectedY = 0;
 int oldSelectedY;
@@ -58,6 +55,7 @@ int oldSelectedX;
 //2-D array that represents the board
 int board [8][8];
 
+// integers to represent types of pieces
 #define EMPTY 0
 #define W_PAWN 1
 #define W_ROOK 2
@@ -97,10 +95,10 @@ void drawBoard() {
 	for (int j=0; j < 4; j++) {
 		for (int i=0; i < 8; i++) {
 			if (i%2 == 0) {
-				sqColor = BROWN; //black
+				sqColor = BROWN;
 			}
 			else {
-				sqColor = BEIGE; // yellow
+				sqColor = BEIGE;
 			}
 			//offset the row by 1
 			tft.fillRect( (BOARD_SIZE/8)*i , BOARD_SIZE/8 + (BOARD_SIZE/4)*j , BOARD_SIZE/8, BOARD_SIZE/8, sqColor);
@@ -150,6 +148,9 @@ void fillBoardArray() {
 
 }
 
+/*
+Function that draws a specified piece onto a specified squarex
+*/
 void drawPiece(int squarex, int squarey, int piecetype) {
 	//int piecetype = board[squarey][squarex];
 	lcd_image_t image;
@@ -198,13 +199,14 @@ void drawPiece(int squarex, int squarey, int piecetype) {
 	}
 
 	if (isEmpty == false) {
-		lcd_image_draw(&image, &tft,0,0,(BOARD_SIZE/8)*squarex ,(BOARD_SIZE/8)*squarey,25, 25);
+		lcd_image_draw(&image, &tft,1,1,(BOARD_SIZE/8)*squarex +3,(BOARD_SIZE/8)*squarey+3,24, 24);
 	}
-
 
 }
 
-
+/*
+Function that draws the contents of the board array to the screen
+*/
 void drawArray() {
 	int piece;
 
@@ -275,15 +277,7 @@ void scroll() {
 
 	if (oldSelectedY != selectedY || oldSelectedX != selectedX) {
 		highlightSquare(selectedX,selectedY);
-
-		if (board[oldSelectedY][oldSelectedX] == EMPTY) {
-			emptySquare(oldSelectedX,oldSelectedY);
-		}
-		else {
-			emptySquare(oldSelectedX,oldSelectedY);
-			//drawPiece(oldSelectedX,oldSelectedY,board[oldSelectedY][oldSelectedX]);
-		}
-
+		emptySquare(oldSelectedX,oldSelectedY);
 	}
 
 	delay(100);
