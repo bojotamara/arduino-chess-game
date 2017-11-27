@@ -150,14 +150,78 @@ void fillBoardArray() {
 
 }
 
-//#TODO: add 3rd param, piecetype, once we get images
-void drawPiece(int squarex, int squarey, lcd_image_t piecetype) {
-	lcd_image_draw(&piecetype, &tft,0,0,(BOARD_SIZE/8)*squarex ,(BOARD_SIZE/8)*squarey,25, 25);
+void drawPiece(int squarex, int squarey, int piecetype) {
+	//int piecetype = board[squarey][squarex];
+	lcd_image_t image;
+	bool isEmpty = false;
+
+	switch (piecetype) {
+		case EMPTY:
+			isEmpty = true;
+			break;
+		case W_ROOK:
+			image = wRookImg;
+			break;
+		case W_KNIGHT:
+			image = wKnightImg;
+			break;
+		case W_BISHOP:
+			image = wBishopImg;
+			break;
+		case W_KING:
+			image = wKingImg;
+			break;
+		case W_QUEEN:
+			image = wQueenImg;
+			break;
+		case W_PAWN:
+			image = wPawnImg;
+			break;
+		case B_ROOK:
+			image = bRookImg;
+			break;
+		case B_KNIGHT:
+			image = bKnightImg;
+			break;
+		case B_BISHOP:
+			image = bBishopImg;
+			break;
+		case B_KING:
+			image = bKingImg;
+			break;
+		case B_QUEEN:
+				image = bQueenImg;
+				break;
+		case B_PAWN:
+		image = bPawnImg;
+		break;
+	}
+
+	if (isEmpty == false) {
+		lcd_image_draw(&image, &tft,0,0,(BOARD_SIZE/8)*squarex ,(BOARD_SIZE/8)*squarey,25, 25);
+	}
+
+
+}
+
+
+void drawArray() {
+	int piece;
+
+	for (int i=0; i<8; i++) {
+		for (int j=0;j<8;j++) {
+
+			piece = board[i][j];
+
+			drawPiece(j,i,piece);
+
+		}
+	}
 }
 
 /*
-Function that clears a square (sets it back to its original color)
-@param: The x and y index of the square you want to highlight
+Function that clears a square (sets it back to its original state)
+@param: The x and y index of the square you want to revert
 				So emptySquare(0,0) will empty the top left square
 */
 void emptySquare(int squarex, int squarey) {
@@ -168,11 +232,8 @@ void emptySquare(int squarex, int squarey) {
 	else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
 		sqColor = BEIGE;
 	}
-	tft.fillRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, sqColor);
-}
-
-void colorSquare(int squarex, int squarey) {
-	tft.fillRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, WHITE );
+	tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, sqColor);
+	//tft.fillRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, sqColor);
 }
 
 /* Highlights a square
@@ -214,10 +275,24 @@ void scroll() {
 
 	if (oldSelectedY != selectedY || oldSelectedX != selectedX) {
 		highlightSquare(selectedX,selectedY);
-		emptySquare(oldSelectedX,oldSelectedY);
+
+		if (board[oldSelectedY][oldSelectedX] == EMPTY) {
+			emptySquare(oldSelectedX,oldSelectedY);
+		}
+		else {
+			emptySquare(oldSelectedX,oldSelectedY);
+			//drawPiece(oldSelectedX,oldSelectedY,board[oldSelectedY][oldSelectedX]);
+		}
+
 	}
 
 	delay(100);
+
+	// when joystick is pressed
+	if (digitalRead(2) == 0) {
+		drawPiece(selectedX,selectedY,B_PAWN);
+		highlightSquare(selectedX,selectedY);
+	}
 
 }
 
@@ -239,6 +314,7 @@ void setup() {
 
 	drawBoard();
 	fillBoardArray();
+	drawArray();
 }
 
 int main() {
@@ -247,12 +323,6 @@ int main() {
 	while(true) {
 
 		scroll();
-
-		// when joystick is pressed
-		if (digitalRead(2) == 0) {
-			drawPiece(selectedX,selectedY,bPawnImg);
-			highlightSquare(selectedX,selectedY);
-		}
 
 	}
 
