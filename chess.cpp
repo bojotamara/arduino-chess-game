@@ -336,6 +336,7 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 void moveMode() {
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 	int pieceToMove = board[selectedY][selectedX];
+	Serial.print(pieceToMove);
 	if (pieceToMove == EMPTY) {
 		tft.println("Can't move empty square");
 		return;
@@ -347,21 +348,31 @@ void moveMode() {
 		scroll();
 
 
-		switch (currentplayer){
-			case 1:
-			// when joystick is pressed
-				if (digitalRead(JOY1_SEL) == 0) {
-					movePiece(oldX,oldY,pieceToMove);
-				}
-				break;
-
-			case 2:
-				if (digitalRead(JOY2_SEL) == 0) {
-					movePiece(oldX,oldY,pieceToMove);
-				}
-				break;
-
+		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
+			movePiece(oldX,oldY,pieceToMove);
+			break;
 		}
+		else if (currentplayer ==2 && digitalRead(JOY2_SEL)==0){
+			movePiece(oldX,oldY,pieceToMove);
+			break;
+		}
+
+		// switch (currentplayer){
+		// 	case 1:
+		// 	// when joystick is pressed
+		// 		if (digitalRead(JOY1_SEL) == 0) {
+		// 			movePiece(oldX,oldY,pieceToMove);
+		//
+		// 		}
+		// 		break;
+		//
+		// 	case 2:
+		// 		if (digitalRead(JOY2_SEL) == 0) {
+		// 			movePiece(oldX,oldY,pieceToMove);
+		// 		}
+		// 		break;
+		//
+		// }
 
 	}
 
@@ -370,7 +381,7 @@ void moveMode() {
 
 void setup() {
 	init();
-	Serial.begin(9000);
+	Serial.begin(9600);
 	tft.begin();
 	pinMode(JOY1_SEL, INPUT_PULLUP);
 	pinMode(JOY2_SEL,INPUT_PULLUP);
