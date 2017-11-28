@@ -19,9 +19,13 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 #define DISPLAY_HEIGHT 240
 #define BOARD_SIZE 240
 
-#define JOY_VERT  A1 // should connect A1 to pin VRx
-#define JOY_HORIZ A0 // should connect A0 to pin VRy
-#define JOY_SEL   2
+#define JOY1_VERT  A1 // should connect A1 to pin VRx
+#define JOY1_HORIZ A0 // should connect A0 to pin VRy
+#define JOY1_SEL   2
+
+#define JOY2_VERT  A4 //player 2 VRx
+#define JOY2_HORIZ A5 //         VRy
+#define JOY2_SEL   8
 
 #define JOY_CENTER   512
 #define JOY_DEADZONE 64
@@ -268,12 +272,23 @@ void highlightSquare(int squarex, int squarey) {
 /*
 Function that allows the player to scroll through the squares to highlight them
 */
-void scroll() {
+void scroll(int player) {
 	oldSelectedY = selectedY;
 	oldSelectedX = selectedX;
+	int xVal, yVal;
 
-	int yVal = analogRead(JOY_VERT);
-	int xVal = analogRead(JOY_HORIZ);
+	switch (player){
+		case 1:
+			yVal = analogRead(JOY1_VERT);
+			xVal = analogRead(JOY1_HORIZ);
+			break;
+
+		case 2:
+			yVal = analogRead(JOY2_VERT);
+			xVal = analogRead(JOY2_HORIZ);
+			break;
+	}
+
 
 	if (yVal < JOY_CENTER - JOY_DEADZONE) {
 		selectedY -= 1;
@@ -324,7 +339,7 @@ void moveMode() {
 	int oldY = selectedY;
 
 	while(true) {
-		scroll();
+		scroll(1);
 
 		if (digitalRead(2) == 0) {
 			tft.println("B");
@@ -340,8 +355,9 @@ void setup() {
 	init();
 	Serial.begin(9000);
 	tft.begin();
-	pinMode(JOY_SEL, INPUT_PULLUP);
-
+	pinMode(JOY1_SEL, INPUT_PULLUP);
+	pinMode(JOY2_SEL,INPUT_PULLUP);
+	
 	Serial.print("Initializing SD card...");
 	if (!SD.begin(SD_CS)) {
 			Serial.println("failed! Is it inserted properly?");
@@ -365,7 +381,7 @@ int main() {
 
 	while(true) {
 
-		scroll();
+		scroll(1);
 
 		// when joystick is pressed
 		if (digitalRead(2) == 0) {
