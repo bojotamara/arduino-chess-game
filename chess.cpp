@@ -71,6 +71,8 @@ int board [8][8];
 #define B_KING -5
 #define B_QUEEN -6
 
+
+
 /*
 Function that draws an empty board to the screen
 */
@@ -305,13 +307,19 @@ void scroll() {
 void movePiece(int oldx, int oldy, int pieceToMove) {
 
 	board[oldy][oldx] = EMPTY;
+	board[selectedY][selectedX] = pieceToMove;
 	emptySquare(oldx,oldy);
 	drawPiece(selectedX,selectedY,pieceToMove);
 
 }
 
 void moveMode() {
+	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 	int pieceToMove = board[selectedY][selectedX];
+	if (pieceToMove == EMPTY) {
+		tft.println("Can't move empty square");
+		return;
+	}
 	int oldX = selectedX;
 	int oldY = selectedY;
 
@@ -346,10 +354,14 @@ void setup() {
 	drawBoard();
 	fillBoardArray();
 	drawArray();
+	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
+	tft.println("hi");
 }
 
 int main() {
 	setup();
+	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
+
 
 	while(true) {
 
