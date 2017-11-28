@@ -148,11 +148,22 @@ void fillBoardArray() {
 
 }
 
+void emptySquare(int squarex, int squarey) {
+	int sqColor;
+	if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+		sqColor = BROWN;
+	}
+	else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+		sqColor = BEIGE;
+	}
+	tft.fillRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, sqColor);
+}
+
 /*
 Function that draws a specified piece onto a specified squarex
 */
 void drawPiece(int squarex, int squarey, int piecetype) {
-	//int piecetype = board[squarey][squarex];
+
 	lcd_image_t image;
 	bool isEmpty = false;
 
@@ -202,6 +213,10 @@ void drawPiece(int squarex, int squarey, int piecetype) {
 		lcd_image_draw(&image, &tft,1,1,(BOARD_SIZE/8)*squarex +3,(BOARD_SIZE/8)*squarey+3,24, 24);
 	}
 
+	else {
+		emptySquare(squarex,squarey);
+	}
+
 }
 
 /*
@@ -224,9 +239,9 @@ void drawArray() {
 /*
 Function that clears a square (sets it back to its original state)
 @param: The x and y index of the square you want to revert
-				So emptySquare(0,0) will empty the top left square
+				So unhighlightSquare(0,0) will empty the top left square
 */
-void emptySquare(int squarex, int squarey) {
+void unhighlightSquare(int squarex, int squarey) {
 	int sqColor;
 	if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
 		sqColor = BROWN;
@@ -240,11 +255,13 @@ void emptySquare(int squarex, int squarey) {
 
 /* Highlights a square
 @param: The x and y index of the square you want to highlight
-				So emptySquare(0,0) will highlight the top left square
+				So unhighlightSquare(0,0) will highlight the top left square
 */
 void highlightSquare(int squarex, int squarey) {
 	tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, 0xFFE0 );
 }
+
+
 
 /*
 Function that allows the player to scroll through the squares to highlight them
@@ -277,15 +294,35 @@ void scroll() {
 
 	if (oldSelectedY != selectedY || oldSelectedX != selectedX) {
 		highlightSquare(selectedX,selectedY);
-		emptySquare(oldSelectedX,oldSelectedY);
+		unhighlightSquare(oldSelectedX,oldSelectedY);
 	}
 
 	delay(100);
 
-	// when joystick is pressed
-	if (digitalRead(2) == 0) {
-		drawPiece(selectedX,selectedY,B_PAWN);
-		highlightSquare(selectedX,selectedY);
+
+}
+
+void movePiece(int oldx, int oldy, int pieceToMove) {
+
+	board[oldy][oldx] = EMPTY;
+	emptySquare(oldx,oldy);
+	drawPiece(selectedX,selectedY,pieceToMove);
+
+}
+
+void moveMode() {
+	int pieceToMove = board[selectedY][selectedX];
+	int oldX = selectedX;
+	int oldY = selectedY;
+
+	while(true) {
+		scroll();
+
+		if (digitalRead(2) == 0) {
+			tft.println("B");
+			movePiece(oldX,oldY,pieceToMove);
+			break;
+		}
 	}
 
 }
@@ -317,6 +354,15 @@ int main() {
 	while(true) {
 
 		scroll();
+
+		// when joystick is pressed
+		if (digitalRead(2) == 0) {
+			delay(100);
+			tft.println("A");
+			moveMode();
+
+		}
+
 
 	}
 
