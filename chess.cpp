@@ -23,8 +23,8 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 #define JOY1_HORIZ A0 // should connect A0 to pin VRy
 #define JOY1_SEL   2
 
-#define JOY2_VERT  A4 //player 2 VRx
-#define JOY2_HORIZ A5 //         VRy
+#define JOY2_VERT  A5 //player 2 VRx
+#define JOY2_HORIZ A4 //         VRy
 #define JOY2_SEL   8
 
 #define JOY_CENTER   512
@@ -58,6 +58,11 @@ int oldSelectedX;
 
 //2-D array that represents the board
 int board [8][8];
+
+
+//keeps track of current player
+//1 is player 1, and 2 is player 2
+int currentplayer=1;
 
 // integers to represent types of pieces
 #define EMPTY 0
@@ -272,12 +277,12 @@ void highlightSquare(int squarex, int squarey) {
 /*
 Function that allows the player to scroll through the squares to highlight them
 */
-void scroll(int player) {
+void scroll() {
 	oldSelectedY = selectedY;
 	oldSelectedX = selectedX;
 	int xVal, yVal;
 
-	switch (player){
+	switch (currentplayer){
 		case 1:
 			yVal = analogRead(JOY1_VERT);
 			xVal = analogRead(JOY1_HORIZ);
@@ -339,13 +344,25 @@ void moveMode() {
 	int oldY = selectedY;
 
 	while(true) {
-		scroll(1);
+		scroll();
 
-		if (digitalRead(2) == 0) {
-			tft.println("B");
-			movePiece(oldX,oldY,pieceToMove);
-			break;
+
+		switch (currentplayer){
+			case 1:
+			// when joystick is pressed
+				if (digitalRead(JOY1_SEL) == 0) {
+					movePiece(oldX,oldY,pieceToMove);
+				}
+				break;
+
+			case 2:
+				if (digitalRead(JOY2_SEL) == 0) {
+					movePiece(oldX,oldY,pieceToMove);
+				}
+				break;
+
 		}
+
 	}
 
 }
@@ -357,7 +374,7 @@ void setup() {
 	tft.begin();
 	pinMode(JOY1_SEL, INPUT_PULLUP);
 	pinMode(JOY2_SEL,INPUT_PULLUP);
-	
+
 	Serial.print("Initializing SD card...");
 	if (!SD.begin(SD_CS)) {
 			Serial.println("failed! Is it inserted properly?");
@@ -378,18 +395,30 @@ int main() {
 	setup();
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 
-
+	//currentplayer=2;
 	while(true) {
 
-		scroll(1);
+		scroll();
 
-		// when joystick is pressed
-		if (digitalRead(2) == 0) {
-			delay(100);
-			tft.println("A");
-			moveMode();
+
+		switch (currentplayer){
+			case 1:
+			// when joystick is pressed
+				if (digitalRead(JOY1_SEL) == 0) {
+					delay(100);
+					moveMode();
+				}
+				break;
+
+			case 2:
+				if (digitalRead(JOY2_SEL) == 0) {
+					delay(100);
+					moveMode();
+				}
+				break;
 
 		}
+
 
 
 	}
