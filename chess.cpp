@@ -349,32 +349,13 @@ void moveMode() {
 
 
 		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
-			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 			movePiece(oldX,oldY,pieceToMove);
 			break;
 		}
 		else if (currentplayer ==2 && digitalRead(JOY2_SEL)==0){
-			while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 			movePiece(oldX,oldY,pieceToMove);
 			break;
 		}
-
-		// switch (currentplayer){
-		// 	case 1:
-		// 	// when joystick is pressed
-		// 		if (digitalRead(JOY1_SEL) == 0) {
-		// 			movePiece(oldX,oldY,pieceToMove);
-		//
-		// 		}
-		// 		break;
-		//
-		// 	case 2:
-		// 		if (digitalRead(JOY2_SEL) == 0) {
-		// 			movePiece(oldX,oldY,pieceToMove);
-		// 		}
-		// 		break;
-		//
-		// }
 
 	}
 
@@ -418,17 +399,17 @@ int main() {
 			case 1:
 			// when joystick is pressed
 				if (digitalRead(JOY1_SEL) == 0) {
-					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					currentplayer=2;
 				}
 				break;
 
 			case 2:
 				if (digitalRead(JOY2_SEL) == 0) {
-					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					currentplayer=1;
 				}
 				break;
 
