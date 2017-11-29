@@ -408,7 +408,6 @@ int main() {
 	setup();
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 
-	//currentplayer=2;
 	while(true) {
 
 		scroll();
@@ -421,6 +420,7 @@ int main() {
 					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					currentplayer=2;
 				}
 				break;
 
@@ -429,6 +429,7 @@ int main() {
 					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					currentplayer=1;
 				}
 				break;
 
