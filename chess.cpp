@@ -19,9 +19,13 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 #define DISPLAY_HEIGHT 240
 #define BOARD_SIZE 240
 
-#define JOY_VERT  A1 // should connect A1 to pin VRx
-#define JOY_HORIZ A0 // should connect A0 to pin VRy
-#define JOY_SEL   2
+#define JOY1_VERT  A1 // should connect A1 to pin VRx
+#define JOY1_HORIZ A0 // should connect A0 to pin VRy
+#define JOY1_SEL   2
+
+#define JOY2_VERT  A5 //player 2 VRx
+#define JOY2_HORIZ A4 //         VRy
+#define JOY2_SEL   8
 
 #define JOY_CENTER   512
 #define JOY_DEADZONE 64
@@ -68,6 +72,11 @@ int oldSelectedX;
 
 //2-D array that represents the board
 int board [8][8];
+
+
+//keeps track of current player
+//1 is player 1, and 2 is player 2
+int currentplayer=1;
 
 // integers to represent types of pieces
 #define EMPTY 0
@@ -347,9 +356,20 @@ Function that allows the player to scroll through the squares to highlight them
 void scroll() {
 	oldSelectedY = selectedY;
 	oldSelectedX = selectedX;
+	int xVal, yVal;
 
-	int yVal = analogRead(JOY_VERT);
-	int xVal = analogRead(JOY_HORIZ);
+	switch (currentplayer){
+		case 1:
+			yVal = analogRead(JOY1_VERT);
+			xVal = analogRead(JOY1_HORIZ);
+			break;
+
+		case 2:
+			yVal = analogRead(JOY2_VERT);
+			xVal = analogRead(JOY2_HORIZ);
+			break;
+	}
+
 
 	if (yVal < JOY_CENTER - JOY_DEADZONE) {
 		selectedY -= 1;
@@ -392,6 +412,7 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 void moveMode() {
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 	int pieceToMove = board[selectedY][selectedX];
+	Serial.print(pieceToMove);
 	if (pieceToMove == EMPTY) {
 		tft.println("Can't move empty square");
 		return;
@@ -402,11 +423,35 @@ void moveMode() {
 	while(true) {
 		scroll();
 
-		if (digitalRead(2) == 0) {
-			tft.println("B");
+
+		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
+			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 			movePiece(oldX,oldY,pieceToMove);
 			break;
 		}
+		else if (currentplayer ==2 && digitalRead(JOY2_SEL)==0){
+			while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
+			movePiece(oldX,oldY,pieceToMove);
+			break;
+		}
+
+		// switch (currentplayer){
+		// 	case 1:
+		// 	// when joystick is pressed
+		// 		if (digitalRead(JOY1_SEL) == 0) {
+		// 			movePiece(oldX,oldY,pieceToMove);
+		//
+		// 		}
+		// 		break;
+		//
+		// 	case 2:
+		// 		if (digitalRead(JOY2_SEL) == 0) {
+		// 			movePiece(oldX,oldY,pieceToMove);
+		// 		}
+		// 		break;
+		//
+		// }
+
 	}
 
 }
@@ -414,9 +459,10 @@ void moveMode() {
 
 void setup() {
 	init();
-	Serial.begin(9000);
+	Serial.begin(9600);
 	tft.begin();
-	pinMode(JOY_SEL, INPUT_PULLUP);
+	pinMode(JOY1_SEL, INPUT_PULLUP);
+	pinMode(JOY2_SEL,INPUT_PULLUP);
 
 	Serial.print("Initializing SD card...");
 	if (!SD.begin(SD_CS)) {
@@ -438,18 +484,33 @@ int main() {
 	setup();
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 
-
 	while(true) {
 
 		scroll();
 
-		// when joystick is pressed
-		if (digitalRead(2) == 0) {
-			delay(100);
-			tft.println("A");
-			moveMode();
+
+		switch (currentplayer){
+			case 1:
+			// when joystick is pressed
+				if (digitalRead(JOY1_SEL) == 0) {
+					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
+					delay(100);
+					moveMode();
+					currentplayer=2;
+				}
+				break;
+
+			case 2:
+				if (digitalRead(JOY2_SEL) == 0) {
+					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
+					delay(100);
+					moveMode();
+					currentplayer=1;
+				}
+				break;
 
 		}
+
 
 
 	}
