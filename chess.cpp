@@ -32,19 +32,33 @@ uint16_t BROWN = tft.color565(139,69,19);
 uint16_t BEIGE = tft.color565(205,133,63);
 
 // images of the pieces
-lcd_image_t wPawnImg = {"icons/wpawn.lcd", 25 , 25};
-lcd_image_t wRookImg = {"icons/wrook.lcd", 25 , 25};
-lcd_image_t wBishopImg = {"icons/wbishop.lcd", 25 , 25};
-lcd_image_t wKnightImg = {"icons/wknight.lcd", 25 , 25};
-lcd_image_t wKingImg = {"icons/wking.lcd", 25 , 25};
-lcd_image_t wQueenImg = {"icons/wqueen.lcd", 25 , 25};
+// dark and light refers to the background color
+lcd_image_t wPawnImgDARK = {"icons/wpawnD.lcd", 25 , 25};
+lcd_image_t wRookImgDARK = {"icons/wrookD.lcd", 25 , 25};
+lcd_image_t wBishopImgDARK = {"icons/wbishopD.lcd", 25 , 25};
+lcd_image_t wKnightImgDARK = {"icons/wknightD.lcd", 25 , 25};
+lcd_image_t wKingImgDARK = {"icons/wkingD.lcd", 25 , 25};
+lcd_image_t wQueenImgDARK = {"icons/wqueenD.lcd", 25 , 25};
+lcd_image_t bPawnImgDARK = {"icons/bpawnD.lcd", 25 , 25};
+lcd_image_t bRookImgDARK = {"icons/brookD.lcd", 25 , 25};
+lcd_image_t bBishopImgDARK = {"icons/bbishopD.lcd", 25 , 25};
+lcd_image_t bKnightImgDARK = {"icons/bknightD.lcd", 25 , 25};
+lcd_image_t bKingImgDARK = {"icons/bkingD.lcd", 25 , 25};
+lcd_image_t bQueenImgDARK = {"icons/bqueenD.lcd", 25 , 25};
 
-lcd_image_t bPawnImg = {"icons/bpawn.lcd", 25 , 25};
-lcd_image_t bRookImg = {"icons/brook.lcd", 25 , 25};
-lcd_image_t bBishopImg = {"icons/bbishop.lcd", 25 , 25};
-lcd_image_t bKnightImg = {"icons/bknight.lcd", 25 , 25};
-lcd_image_t bKingImg = {"icons/bking.lcd", 25 , 25};
-lcd_image_t bQueenImg = {"icons/bqueen.lcd", 25 , 25};
+lcd_image_t wPawnImgLIGHT = {"icons/wpawnL.lcd", 25 , 25};
+lcd_image_t wRookImgLIGHT = {"icons/wrookL.lcd", 25 , 25};
+lcd_image_t wBishopImgLIGHT = {"icons/wbishopL.lcd", 25 , 25};
+lcd_image_t wKnightImgLIGHT = {"icons/wknightL.lcd", 25 , 25};
+lcd_image_t wKingImgLIGHT = {"icons/wkingL.lcd", 25 , 25};
+lcd_image_t wQueenImgLIGHT = {"icons/wqueenL.lcd", 25 , 25};
+lcd_image_t bPawnImgLIGHT = {"icons/bpawnL.lcd", 25 , 25};
+lcd_image_t bRookImgLIGHT = {"icons/brookL.lcd", 25 , 25};
+lcd_image_t bBishopImgLIGHT = {"icons/bbishopL.lcd", 25 , 25};
+lcd_image_t bKnightImgLIGHT = {"icons/bknightL.lcd", 25 , 25};
+lcd_image_t bKingImgLIGHT = {"icons/bkingL.lcd", 25 , 25};
+lcd_image_t bQueenImgLIGHT = {"icons/bqueenL.lcd", 25 , 25};
+
 
 // hold the position of square selected
 int selectedY = 0;
@@ -57,6 +71,7 @@ int board [8][8];
 
 // integers to represent types of pieces
 #define EMPTY 0
+
 #define W_PAWN 1
 #define W_ROOK 2
 #define W_KNIGHT 3
@@ -162,7 +177,8 @@ void emptySquare(int squarex, int squarey) {
 }
 
 /*
-Function that draws a specified piece onto a specified squarex
+Function that draws a specified piece onto a specified squarex and squarey,
+also uploading a different backgroud color based on the square
 */
 void drawPiece(int squarex, int squarey, int piecetype) {
 
@@ -174,40 +190,100 @@ void drawPiece(int squarex, int squarey, int piecetype) {
 			isEmpty = true;
 			break;
 		case W_ROOK:
-			image = wRookImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = wRookImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = wRookImgLIGHT;
+			}
 			break;
 		case W_KNIGHT:
-			image = wKnightImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = wKnightImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = wKnightImgLIGHT;
+			}
 			break;
 		case W_BISHOP:
-			image = wBishopImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = wBishopImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = wBishopImgLIGHT;
+			}
 			break;
 		case W_KING:
-			image = wKingImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = wKingImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = wKingImgLIGHT;
+			}
 			break;
 		case W_QUEEN:
-			image = wQueenImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = wQueenImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = wQueenImgLIGHT;
+			}
 			break;
 		case W_PAWN:
-			image = wPawnImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = wPawnImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = wPawnImgLIGHT;
+			}
 			break;
 		case B_ROOK:
-			image = bRookImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = bRookImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = bRookImgLIGHT;
+			}
 			break;
 		case B_KNIGHT:
-			image = bKnightImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = bKnightImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = bKnightImgLIGHT;
+			}
 			break;
 		case B_BISHOP:
-			image = bBishopImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = bBishopImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = bBishopImgLIGHT;
+			}
 			break;
 		case B_KING:
-			image = bKingImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = bKingImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = bKingImgLIGHT;
+			}
 			break;
 		case B_QUEEN:
-				image = bQueenImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = bQueenImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = bQueenImgLIGHT;
+			}
 				break;
 		case B_PAWN:
-		image = bPawnImg;
+			if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
+				image = bPawnImgDARK;
+			}
+			else if ( (squarex % 2 ==0 && squarey % 2 == 0) || (squarex % 2 !=0 && squarey % 2 != 0) ) {
+				image = bPawnImgLIGHT;
+			}
 		break;
 	}
 
