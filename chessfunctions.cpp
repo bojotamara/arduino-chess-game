@@ -7,12 +7,17 @@
 
 #include "chessfunctions.h"
 
+/*
+================================================================================
+LCD STUFF
+*/
 #define TFT_DC 9
 #define TFT_CS 10
 #define SD_CS 6
+#define DISPLAY_WIDTH  320
+#define DISPLAY_HEIGHT 240
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-
 
 // common colors
 #define WHITE 0xFFFF
@@ -48,7 +53,10 @@ lcd_image_t bKingImgLIGHT = {"icons/bkingL.lcd", 25 , 25};
 lcd_image_t bQueenImgLIGHT = {"icons/bqueenL.lcd", 25 , 25};
 
 
-
+/*
+================================================================================
+JOYSTICK STUFF
+*/
 #define JOY1_VERT  A1 // should connect A1 to pin VRx
 #define JOY1_HORIZ A0 // should connect A0 to pin VRy
 #define JOY1_SEL   2
@@ -61,9 +69,10 @@ lcd_image_t bQueenImgLIGHT = {"icons/bqueenL.lcd", 25 , 25};
 #define JOY_DEADZONE 64
 
 
-#define DISPLAY_WIDTH  320
-#define DISPLAY_HEIGHT 240
-
+/*
+================================================================================
+MATRIX STUFF
+*/
 // integers to represent types of pieces
 #define EMPTY 0
 
@@ -93,7 +102,10 @@ int selectedX = 0;
 int oldSelectedX;
 
 
-
+/*
+DRAWING FUNCTIONS
+================================================================================
+*/
 
 
 /*
@@ -131,6 +143,23 @@ void drawBoard() {
 	}
 
 
+}
+
+/*
+Function that draws the contents of the board array to the screen
+*/
+void drawArray() {
+	int piece;
+
+	for (int i=0; i<8; i++) {
+		for (int j=0;j<8;j++) {
+
+			piece = board[i][j];
+
+			drawPiece(j,i,piece);
+
+		}
+	}
 }
 
 /*
@@ -305,22 +334,6 @@ void drawPiece(int squarex, int squarey, int piecetype) {
 
 }
 
-/*
-Function that draws the contents of the board array to the screen
-*/
-void drawArray() {
-	int piece;
-
-	for (int i=0; i<8; i++) {
-		for (int j=0;j<8;j++) {
-
-			piece = board[i][j];
-
-			drawPiece(j,i,piece);
-
-		}
-	}
-}
 
 /*
 Function that clears a square (sets it back to its original state)
@@ -348,6 +361,10 @@ void highlightSquare(int squarex, int squarey) {
 }
 
 
+/*
+GAME LOGIC
+================================================================================
+*/
 
 /*
 Function that allows the player to scroll through the squares to highlight them
@@ -454,6 +471,9 @@ void moveMode() {
 	}
 
 }
+
+
+//==============================================================================
 
 void setup() {
 	init();
