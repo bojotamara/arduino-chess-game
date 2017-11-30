@@ -412,7 +412,6 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 void moveMode() {
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 	int pieceToMove = board[selectedY][selectedX];
-	Serial.print(pieceToMove);
 	if (pieceToMove == EMPTY) {
 		tft.println("Can't move empty square");
 		return;
