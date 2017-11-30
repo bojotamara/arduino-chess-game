@@ -15,7 +15,7 @@ void drawArray();
 
 void unhighlightSquare(int squarex, int squarey);
 
-void highlightSquare(int squarex, int squarey);
+void highlightSquare(int squarex, int squarey, uint16_t bordercolor= 0xFFFF);
 
 void scroll();
 
