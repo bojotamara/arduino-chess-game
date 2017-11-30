@@ -21,6 +21,11 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 // common colors
 #define WHITE 0xFFFF
+#define YELLOW 0xFFE0
+#define RED 0xF800
+#define BLACK 0x0000
+#define CYAN 0x07FF
+
 uint16_t BROWN = tft.color565(139,69,19);
 uint16_t BEIGE = tft.color565(205,133,63);
 
@@ -100,6 +105,8 @@ int selectedY = 0;
 int oldSelectedY;
 int selectedX = 0;
 int oldSelectedX;
+int chosenX=10;
+int chosenY=10;
 
 
 /*
@@ -356,8 +363,17 @@ void unhighlightSquare(int squarex, int squarey) {
 @param: The x and y index of the square you want to highlight
 				So unhighlightSquare(0,0) will highlight the top left square
 */
-void highlightSquare(int squarex, int squarey) {
-	tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, 0xFFE0 );
+void highlightSquare(int squarex, int squarey, uint16_t bordercolor) {
+	if (bordercolor == RED) {
+		tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, RED);
+	}
+	else if (currentplayer == 1 ) {
+		tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, YELLOW);
+	}
+	else if (currentplayer == 2) {
+		tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, CYAN );
+	}
+
 }
 
 
@@ -407,8 +423,18 @@ void scroll() {
 	selectedX = constrain(selectedX,0,7);
 
 	if (oldSelectedY != selectedY || oldSelectedX != selectedX) {
-		highlightSquare(selectedX,selectedY);
-		unhighlightSquare(oldSelectedX,oldSelectedY);
+		if (selectedX == chosenX && selectedY == chosenY) {
+			//
+		}
+		else {
+			highlightSquare(selectedX,selectedY);
+		}
+		if (oldSelectedX == chosenX && oldSelectedY == chosenY) {
+			//
+		} else {
+			unhighlightSquare(oldSelectedX,oldSelectedY);
+		}
+
 	}
 
 	delay(100);
@@ -441,8 +467,12 @@ void moveMode() {
 		return;
 	}
 
-	int oldX = selectedX;
-	int oldY = selectedY;
+	chosenX = selectedX;
+	chosenY = selectedY;
+
+	highlightSquare(chosenX,chosenY,RED);
+
+
 
 	while(true) {
 		scroll();
@@ -450,22 +480,34 @@ void moveMode() {
 
 		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
 			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
-			if (selectedX == oldX && selectedY == oldY){
+			if (selectedX == chosenX && selectedY == chosenY){
 				//same piece selected, cancel the move
-				break;
 			}
-			movePiece(oldX,oldY,pieceToMove);
-			currentplayer = 2;
+			else {
+				movePiece(chosenX,chosenY,pieceToMove);
+				currentplayer = 2;
+			}
+			//clear the red highlighting, set chosen piece to nothing
+			highlightSquare(selectedX,selectedY);
+			chosenX = 10;
+			chosenY = 10;
+			//end the move
 			break;
 		}
 		else if (currentplayer ==2 && digitalRead(JOY2_SEL)==0){
 			while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
-			if (selectedX == oldX && selectedY == oldY){
+			if (selectedX == chosenX && selectedY == chosenY){
 				//same piece selected, cancel the move
-				break;
 			}
-			movePiece(oldX,oldY,pieceToMove);
-			currentplayer = 1;
+			else {
+				movePiece(chosenX,chosenY,pieceToMove);
+				currentplayer = 1;
+			}
+			//clear the red highlighting, set chosen piece to nothing
+			highlightSquare(selectedX,selectedY);
+			chosenX = 10;
+			chosenY = 10;
+			//end the move
 			break;
 		}
 	}
