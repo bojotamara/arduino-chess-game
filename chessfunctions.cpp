@@ -5,6 +5,15 @@
 #include <Adafruit_ILI9341.h>
 #include "lcd_image.h"
 
+#include "chessfunctions.h"
+
+#define TFT_DC 9
+#define TFT_CS 10
+#define SD_CS 6
+
+Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+
+
 // common colors
 #define WHITE 0xFFFF
 uint16_t BROWN = tft.color565(139,69,19);
@@ -40,9 +49,20 @@ lcd_image_t bQueenImgLIGHT = {"icons/bqueenL.lcd", 25 , 25};
 
 
 
+#define JOY1_VERT  A1 // should connect A1 to pin VRx
+#define JOY1_HORIZ A0 // should connect A0 to pin VRy
+#define JOY1_SEL   2
+
+#define JOY2_VERT  A5 //player 2 VRx
+#define JOY2_HORIZ A4 //         VRy
+#define JOY2_SEL   8
+
+#define JOY_CENTER   512
+#define JOY_DEADZONE 64
 
 
-
+#define DISPLAY_WIDTH  320
+#define DISPLAY_HEIGHT 240
 
 // integers to represent types of pieces
 #define EMPTY 0
@@ -60,6 +80,21 @@ lcd_image_t bQueenImgLIGHT = {"icons/bqueenL.lcd", 25 , 25};
 #define B_BISHOP -4
 #define B_KING -5
 #define B_QUEEN -6
+
+//2-D array that represents the board
+int board [8][8];
+
+#define BOARD_SIZE 240
+
+// hold the position of square selected
+int selectedY = 0;
+int oldSelectedY;
+int selectedX = 0;
+int oldSelectedX;
+
+
+
+
 
 /*
 Function that draws an empty board to the screen
@@ -418,4 +453,27 @@ void moveMode() {
 		}
 	}
 
+}
+
+void setup() {
+	init();
+	Serial.begin(9600);
+	tft.begin();
+	pinMode(JOY1_SEL, INPUT_PULLUP);
+	pinMode(JOY2_SEL,INPUT_PULLUP);
+
+	Serial.print("Initializing SD card...");
+	if (!SD.begin(SD_CS)) {
+			Serial.println("failed! Is it inserted properly?");
+			while (true) {}
+		}
+		Serial.println("OK!");
+
+	tft.setRotation(3);
+
+	drawBoard();
+	fillBoardArray();
+	drawArray();
+	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
+  	currentplayer=1;
 }
