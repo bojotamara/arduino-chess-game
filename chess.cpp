@@ -412,11 +412,19 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 void moveMode() {
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 	int pieceToMove = board[selectedY][selectedX];
-	Serial.print(pieceToMove);
 	if (pieceToMove == EMPTY) {
 		tft.println("Can't move empty square");
 		return;
 	}
+	else if (pieceToMove > 0 && currentplayer == 2) {
+		//cant move opponents piece
+		return;
+	}
+	else if (pieceToMove < 0 && currentplayer == 1) {
+		// cant move opponents piece
+		return;
+	}
+
 	int oldX = selectedX;
 	int oldY = selectedY;
 
@@ -426,32 +434,24 @@ void moveMode() {
 
 		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
 			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
+			if (selectedX == oldX && selectedY == oldY){
+				//same piece selected, cancel the move
+				break;
+			}
 			movePiece(oldX,oldY,pieceToMove);
+			currentplayer = 2;
 			break;
 		}
 		else if (currentplayer ==2 && digitalRead(JOY2_SEL)==0){
 			while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
+			if (selectedX == oldX && selectedY == oldY){
+				//same piece selected, cancel the move
+				break;
+			}
 			movePiece(oldX,oldY,pieceToMove);
+			currentplayer = 1;
 			break;
 		}
-
-		// switch (currentplayer){
-		// 	case 1:
-		// 	// when joystick is pressed
-		// 		if (digitalRead(JOY1_SEL) == 0) {
-		// 			movePiece(oldX,oldY,pieceToMove);
-		//
-		// 		}
-		// 		break;
-		//
-		// 	case 2:
-		// 		if (digitalRead(JOY2_SEL) == 0) {
-		// 			movePiece(oldX,oldY,pieceToMove);
-		// 		}
-		// 		break;
-		//
-		// }
-
 	}
 
 }
@@ -496,7 +496,6 @@ int main() {
 					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
-					currentplayer=2;
 				}
 				break;
 
@@ -505,7 +504,6 @@ int main() {
 					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
-					currentplayer=1;
 				}
 				break;
 
