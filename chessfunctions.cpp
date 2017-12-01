@@ -372,11 +372,38 @@ void dispCurrentPlayer(){
 void dispTips(String tip){
 	//keep this I'm using it for checking boundaries when debugging
 	//tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,80,BROWN);
-	tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,80,CHOCOBROWN);
+	tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,120,CHOCOBROWN);
 	tft.setCursor(BOARD_SIZE+5,60);
 	tft.setTextSize(1);
 
-	if(tip=="select"){
+	if (tip =="wrongpiece" || tip == "emptysquare"){
+		highlightSquare(selectedX,selectedY,RED);
+		if(tip == "wrongpiece"){
+			tft.println("Oops! You");
+			tft.setCursor(BOARD_SIZE+5,70);
+			tft.println("picked your");
+			tft.setCursor(BOARD_SIZE+5,80);
+			tft.println("opponent's");
+			tft.setCursor(BOARD_SIZE+5,90);
+			tft.println("piece, try");
+			tft.setCursor(BOARD_SIZE+5,100);
+			tft.println("picking one");
+			tft.setCursor(BOARD_SIZE+5,110);
+			tft.println("of yours!");
+		}
+		else if(tip == "emptysquare"){
+			tft.println("You didn't");
+			tft.setCursor(BOARD_SIZE+5,70);
+			tft.println("select a");
+			tft.setCursor(BOARD_SIZE+5,80);
+			tft.println("piece to");
+			tft.setCursor(BOARD_SIZE+5,90);
+			tft.println("move!");
+		}
+		delay(2000);
+		unhighlightSquare(selectedX,selectedY);
+	}
+	else if(tip=="select"){
 		tft.println("Pick a piece");
 		tft.setCursor(BOARD_SIZE+5,70);
 		tft.println("to move");
@@ -387,22 +414,24 @@ void dispTips(String tip){
 		tft.setCursor(BOARD_SIZE+5,70);
 		tft.println("spot to move");
 		tft.setCursor(BOARD_SIZE+5,80);
-		tft.println("it to.");
+		tft.println("it to. Or");
+		tft.setCursor(BOARD_SIZE+5,90);
+		tft.println("cancel by");
+		tft.setCursor(BOARD_SIZE+5,100);
+		tft.println("clicking on");
+		tft.setCursor(BOARD_SIZE+5,110);
+		tft.println("the chosen");
+		tft.setCursor(BOARD_SIZE+5,120);
+		tft.println("piece again");
+		tft.setCursor(BOARD_SIZE+5,130);
+		tft.println("then pick");
+		tft.setCursor(BOARD_SIZE+5,140);
+		tft.println("a different");
+		tft.setCursor(BOARD_SIZE+5,150);
+		tft.println("piece");
+
 	}
 
-	else if(tip == "wrongpiece"){
-		tft.println("Oops! You");
-		tft.setCursor(BOARD_SIZE+5,70);
-		tft.println("picked your");
-		tft.setCursor(BOARD_SIZE+5,80);
-		tft.println("opponent's");
-		tft.setCursor(BOARD_SIZE+5,90);
-		tft.println("piece, try");
-		tft.setCursor(BOARD_SIZE+5,100);
-		tft.println("picking one");
-		tft.setCursor(BOARD_SIZE+5,110);
-		tft.println("of yours!");
-	}
 
 
 }
@@ -523,32 +552,34 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 }
 
 void moveMode() {
-	dispTips("move");
+
 
 	int pieceToMove = board[selectedY][selectedX];
 	if (pieceToMove == EMPTY) {
-		tft.println("Can't move empty square");
+		//tft.println("Can't move empty square");
+		dispTips("emptysquare");
 		return;
 	}
 	else if (pieceToMove > 0 && currentplayer == 2) {
 		//cant move opponents piece
 
 		//flash square red to let player know that square can't be moved
-		highlightSquare(selectedX,selectedY,RED);
+		//highlightSquare(selectedX,selectedY,RED);
 		dispTips("wrongpiece");
-		delay(2000);
-		unhighlightSquare(selectedX,selectedY);
+		//unhighlightSquare(selectedX,selectedY);
 		return;
 	}
 	else if (pieceToMove < 0 && currentplayer == 1) {
 		// cant move opponents piece
 
 		//flash square red to let player know that square can't be moved
-		highlightSquare(selectedX,selectedY,RED);
+		//highlightSquare(selectedX,selectedY,RED);
 		dispTips("wrongpiece");
-		delay(2000);
-		unhighlightSquare(selectedX,selectedY);
+		//unhighlightSquare(selectedX,selectedY);
 		return;
+	}
+	else{
+		dispTips("move");
 	}
 
 	chosenX = selectedX;
