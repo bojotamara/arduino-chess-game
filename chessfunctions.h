@@ -25,4 +25,6 @@ void moveMode();
 
 void dispCurrentPlayer();
 
+void dispTips(String tip);
+
 #endif

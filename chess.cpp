@@ -27,6 +27,7 @@ int main() {
 					delay(100);
 					moveMode();
 					dispCurrentPlayer(); //updates sidemenu
+					dispTips("select");
 				}
 				break;
 
@@ -36,6 +37,7 @@ int main() {
 					delay(100);
 					moveMode();
 					dispCurrentPlayer();
+					dispTips("select");
 				}
 				break;
 
