@@ -26,6 +26,7 @@ int main() {
 					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					dispCurrentPlayer(); //updates sidemenu
 				}
 				break;
 
@@ -34,6 +35,7 @@ int main() {
 					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					dispCurrentPlayer();
 				}
 				break;
 

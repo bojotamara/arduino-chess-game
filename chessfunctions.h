@@ -23,4 +23,6 @@ void movePiece(int oldx, int oldy, int pieceToMove);
 
 void moveMode();
 
+void dispCurrentPlayer();
+
 #endif
