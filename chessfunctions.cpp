@@ -27,7 +27,7 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 #define CYAN 0x07FF
 uint16_t BROWN = tft.color565(139,69,19);
 uint16_t BEIGE = tft.color565(205,133,63);
-#define CHOCOBROWN 0xA9E5
+#define CHOCOBROWN 0x8AE7
 
 
 // images of the pieces
