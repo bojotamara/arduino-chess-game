@@ -25,9 +25,10 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 #define RED 0xF800
 #define BLACK 0x0000
 #define CYAN 0x07FF
-
 uint16_t BROWN = tft.color565(139,69,19);
 uint16_t BEIGE = tft.color565(205,133,63);
+#define CHOCOBROWN 0xA9E5
+
 
 // images of the pieces
 // dark and light refers to the background color
@@ -56,6 +57,9 @@ lcd_image_t bBishopImgLIGHT = {"icons/bbishopL.lcd", 25 , 25};
 lcd_image_t bKnightImgLIGHT = {"icons/bknightL.lcd", 25 , 25};
 lcd_image_t bKingImgLIGHT = {"icons/bkingL.lcd", 25 , 25};
 lcd_image_t bQueenImgLIGHT = {"icons/bqueenL.lcd", 25 , 25};
+/*
+================================================================================
+*/
 
 
 /*
@@ -72,12 +76,15 @@ JOYSTICK STUFF
 
 #define JOY_CENTER   512
 #define JOY_DEADZONE 64
-
+/*
+================================================================================
+*/
 
 /*
 ================================================================================
-MATRIX STUFF
+MATRIX STUFF FOR CHESSBOARD
 */
+
 // integers to represent types of pieces
 #define EMPTY 0
 
@@ -107,13 +114,15 @@ int selectedX = 0;
 int oldSelectedX;
 int chosenX=10;
 int chosenY=10;
+/*
+================================================================================
+/*
 
 
 /*
 DRAWING FUNCTIONS
 ================================================================================
 */
-
 
 /*
 Function that draws an empty board to the screen
@@ -149,6 +158,8 @@ void drawBoard() {
 		}
 	}
 
+// fills in right menu
+tft.fillRect(BOARD_SIZE,0,DISPLAY_WIDTH-BOARD_SIZE,DISPLAY_HEIGHT,CHOCOBROWN);
 
 }
 
@@ -169,45 +180,6 @@ void drawArray() {
 	}
 }
 
-/*
-Function that fills the board array with the appropriate pieces at the start
-of a chess game
-*/
-void fillBoardArray() {
-	//pawns
-	for (int i=0; i<8; i++) {
-		board[6][i] = W_PAWN;
-		board[1][i] = B_PAWN;
-	}
-
-	// bottom/ white pieces
-	board[7][0] = W_ROOK;
-	board[7][1] = W_KNIGHT;
-	board[7][2] = W_BISHOP;
-	board[7][3] = W_QUEEN;
-	board[7][4] = W_KING;
-	board[7][5] = W_BISHOP;
-	board[7][6] = W_KNIGHT;
-	board[7][7] = W_ROOK;
-
-	// top/ black pieces
-	board[0][0] = B_ROOK;
-	board[0][1] = B_KNIGHT;
-	board[0][2] = B_BISHOP;
-	board[0][3] = B_QUEEN;
-	board[0][4] = B_KING;
-	board[0][5] = B_BISHOP;
-	board[0][6] = B_KNIGHT;
-	board[0][7] = B_ROOK;
-
-	//empty spaces
-	for (int i=2; i < 6; i++) {
-		for (int j=0; j<8; j++) {
-			board[i][j] = EMPTY;
-		}
-	}
-
-}
 
 void emptySquare(int squarex, int squarey) {
 	int sqColor;
@@ -376,11 +348,67 @@ void highlightSquare(int squarex, int squarey, uint16_t bordercolor) {
 
 }
 
+void dispCurrentPlayer(){
+	tft.setCursor(BOARD_SIZE+8,8);
+	tft.setTextSize(6);
+
+	switch (currentplayer){
+		case 1:
+			tft.setTextColor(YELLOW,CHOCOBROWN);
+			tft.print("P1");
+			break;
+
+		case 2:
+			tft.setTextColor(CYAN,CHOCOBROWN);
+			tft.print("P2");
+			break;
+	}
+}
 
 /*
 GAME LOGIC
 ================================================================================
 */
+
+/*
+Function that fills the board array with the appropriate pieces at the start
+of a chess game
+*/
+void fillBoardArray() {
+	//pawns
+	for (int i=0; i<8; i++) {
+		board[6][i] = W_PAWN;
+		board[1][i] = B_PAWN;
+	}
+
+	// bottom/ white pieces
+	board[7][0] = W_ROOK;
+	board[7][1] = W_KNIGHT;
+	board[7][2] = W_BISHOP;
+	board[7][3] = W_QUEEN;
+	board[7][4] = W_KING;
+	board[7][5] = W_BISHOP;
+	board[7][6] = W_KNIGHT;
+	board[7][7] = W_ROOK;
+
+	// top/ black pieces
+	board[0][0] = B_ROOK;
+	board[0][1] = B_KNIGHT;
+	board[0][2] = B_BISHOP;
+	board[0][3] = B_QUEEN;
+	board[0][4] = B_KING;
+	board[0][5] = B_BISHOP;
+	board[0][6] = B_KNIGHT;
+	board[0][7] = B_ROOK;
+
+	//empty spaces
+	for (int i=2; i < 6; i++) {
+		for (int j=0; j<8; j++) {
+			board[i][j] = EMPTY;
+		}
+	}
+
+}
 
 /*
 Function that allows the player to scroll through the squares to highlight them
@@ -513,9 +541,9 @@ void moveMode() {
 	}
 
 }
-
-
-//==============================================================================
+/*
+================================================================================
+*/
 
 void setup() {
 	init();
@@ -537,5 +565,5 @@ void setup() {
 	fillBoardArray();
 	drawArray();
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
-  	currentplayer=1;
+	dispCurrentPlayer();
 }

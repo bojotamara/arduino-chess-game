@@ -9,7 +9,7 @@
 
 //keeps track of current player
 //1 is player 1, and 2 is player 2
-int currentplayer;
+int currentplayer=1;
 
 int main() {
 	setup();
@@ -26,6 +26,7 @@ int main() {
 					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					dispCurrentPlayer(); //updates sidemenu
 				}
 				break;
 
@@ -34,6 +35,7 @@ int main() {
 					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
+					dispCurrentPlayer();
 				}
 				break;
 
