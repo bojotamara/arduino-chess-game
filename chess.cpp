@@ -9,7 +9,7 @@
 
 //keeps track of current player
 //1 is player 1, and 2 is player 2
-int currentplayer;
+int currentplayer=1;
 
 int main() {
 	setup();

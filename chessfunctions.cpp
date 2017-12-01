@@ -56,6 +56,9 @@ lcd_image_t bBishopImgLIGHT = {"icons/bbishopL.lcd", 25 , 25};
 lcd_image_t bKnightImgLIGHT = {"icons/bknightL.lcd", 25 , 25};
 lcd_image_t bKingImgLIGHT = {"icons/bkingL.lcd", 25 , 25};
 lcd_image_t bQueenImgLIGHT = {"icons/bqueenL.lcd", 25 , 25};
+/*
+================================================================================
+*/
 
 
 /*
@@ -72,12 +75,15 @@ JOYSTICK STUFF
 
 #define JOY_CENTER   512
 #define JOY_DEADZONE 64
-
+/*
+================================================================================
+*/
 
 /*
 ================================================================================
-MATRIX STUFF
+MATRIX STUFF FOR CHESSBOARD
 */
+
 // integers to represent types of pieces
 #define EMPTY 0
 
@@ -107,13 +113,15 @@ int selectedX = 0;
 int oldSelectedX;
 int chosenX=10;
 int chosenY=10;
+/*
+================================================================================
+/*
 
 
 /*
 DRAWING FUNCTIONS
 ================================================================================
 */
-
 
 /*
 Function that draws an empty board to the screen
@@ -513,9 +521,9 @@ void moveMode() {
 	}
 
 }
-
-
-//==============================================================================
+/*
+================================================================================
+*/
 
 void setup() {
 	init();
@@ -537,5 +545,4 @@ void setup() {
 	fillBoardArray();
 	drawArray();
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
-  	currentplayer=1;
 }
