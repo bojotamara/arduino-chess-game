@@ -150,9 +150,24 @@ bool validateMove(int piecetomove, int selX, int selY) {
 						valid=true;
 						break;
 					}
-			}
+				}
+	}
 
-		//default : valid = true; // just so when working on this, the other moves will always be valid
+	//cant eat your own pieces
+	if (currentplayer == 1 && board[selY][selX] > 0) {
+		valid = false;
+	}
+	else if ( currentplayer == 2 && board[selY][selX] < 0) {
+		valid = false;
+	}
+
+	return valid;
+}
+
+bool checkObstruction(int piece) {
+	bool valid = true;
+	if (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) {
+
 	}
 
 	return valid;
