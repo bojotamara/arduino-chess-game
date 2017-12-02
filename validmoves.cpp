@@ -25,6 +25,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 	bool valid = false;
 
 	switch (piecetomove) {
+		//need to work on pawns moving 2 spaces on first turn, and leater en passant
 		case W_PAWN:
 			// valid if pawn is moved forward on an empty space
 			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY - 1){
@@ -45,7 +46,113 @@ bool validateMove(int piecetomove, int selX, int selY) {
 				valid = true;
 			}
 			break;
-		default : valid = true; // just so when working on this, the other moves will always be valid
+
+		//need to work on killing opponent, and checking for pieces blocking path
+		case W_ROOK:
+			//valid if moved horizontally or vertically but not both
+			if (selX==chosenX || selY==chosenY){
+				valid = true;
+			}
+			break;
+
+		case B_ROOK:
+			//valid if moved horizontally or vertically but not both
+			if (selX==chosenX || selY==chosenY){
+				valid = true;
+			}
+			break;
+
+		case W_KNIGHT:
+			//valid for 2 blocks up/down and 1 to the right/left
+			if(selX==chosenX+1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX+1 && selY==chosenY-2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY-2){
+				valid =true;
+			}
+			break;
+
+		case B_KNIGHT:
+			//valid for 2 blocks up/down and 1 to the right/left
+			if(selX==chosenX+1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX+1 && selY==chosenY-2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY-2){
+				valid =true;
+			}
+			break;
+
+		case W_BISHOP:
+			//diagonals, as long as square is empty and path is unobstructed
+			for(int i=-7; i<8;i++){
+				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					valid=true;
+					break;
+				}
+			}
+
+
+		case B_BISHOP:
+			//diagonals, as long as square is empty and path is unobstructed
+			for(int i=-7; i<8;i++){
+				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					valid=true;
+					break;
+				}
+			}
+
+
+		case W_KING:
+			//valid for 2 blocks up/down and 1 to the right/left
+			if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] == EMPTY){
+				valid=true;
+			}
+			break;
+
+		case B_KING:
+			//valid for 2 blocks up/down and 1 to the right/left
+			if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] == EMPTY){
+				valid=true;
+			}
+			break;
+
+		case W_QUEEN:
+			if (selX==chosenX || selY==chosenY){
+				valid = true;
+				break;
+			}
+			for(int i=-7; i<8;i++){
+				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					valid=true;
+					break;
+				}
+			}
+
+			case B_QUEEN:
+				if (selX==chosenX || selY==chosenY){
+					valid = true;
+					break;
+				}
+				for(int i=-7; i<8;i++){
+					if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+						valid=true;
+						break;
+					}
+			}
+
+		//default : valid = true; // just so when working on this, the other moves will always be valid
 	}
 
 	return valid;
@@ -54,7 +161,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 void highlightValid(int pieceToMove){
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
-      Serial.println(validateMove(pieceToMove, i, j));
+      //Serial.println(validateMove(pieceToMove, i, j));
       if(validateMove(pieceToMove, i, j)){
         highlightSquare(i,j,0x600F);
       }

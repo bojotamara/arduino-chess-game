@@ -675,6 +675,10 @@ void moveMode() {
 				//end the move
 				break;
 			}
+			else if(!valid){
+				dispTips("invalidmove");
+				dispTips("move");
+			}
 
 
 		}
