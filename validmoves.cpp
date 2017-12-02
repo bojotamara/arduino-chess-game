@@ -116,14 +116,14 @@ bool validateMove(int piecetomove, int selX, int selY) {
 
 		case W_KING:
 			//valid for 2 blocks up/down and 1 to the right/left
-			if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] == EMPTY){
+			if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] <= 0){
 				valid=true;
 			}
 			break;
 
 		case B_KING:
 			//valid for 2 blocks up/down and 1 to the right/left
-			if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] == EMPTY){
+			if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] >=0){
 				valid=true;
 			}
 			break;
