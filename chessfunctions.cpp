@@ -6,7 +6,7 @@
 #include "lcd_image.h"
 
 #include "chessfunctions.h"
-
+#include "validmoves.h"
 /*
 ================================================================================
 LCD STUFF
@@ -376,7 +376,7 @@ void dispTips(String tip){
 	tft.setCursor(BOARD_SIZE+5,60);
 	tft.setTextSize(1);
 
-	if (tip =="wrongpiece" || tip == "emptysquare"){
+	if (tip =="wrongpiece" || tip == "emptysquare" || tip == "invalidmove"){
 		highlightSquare(selectedX,selectedY,RED);
 		if(tip == "wrongpiece"){
 			tft.println("Oops! You");
@@ -399,6 +399,16 @@ void dispTips(String tip){
 			tft.println("piece to");
 			tft.setCursor(BOARD_SIZE+5,90);
 			tft.println("move!");
+		}
+		else if(tip == "invalidmove"){
+			tft.println("Oops, you");
+			tft.setCursor(BOARD_SIZE+5,70);
+			tft.println("chose an");
+			tft.setCursor(BOARD_SIZE+5,80);
+			tft.println("invalid spot");
+			tft.setCursor(BOARD_SIZE+5,90);
+			tft.println("to move to");
+
 		}
 		delay(2000);
 		unhighlightSquare(selectedX,selectedY);
@@ -431,6 +441,7 @@ void dispTips(String tip){
 		tft.println("piece");
 
 	}
+
 
 
 
@@ -542,6 +553,9 @@ void scroll() {
 
 }
 
+/*
+Function that moves a piece to the selected square, and updates the board array
+*/
 void movePiece(int oldx, int oldy, int pieceToMove) {
 
 	board[oldy][oldx] = EMPTY;
@@ -550,6 +564,8 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	drawPiece(selectedX,selectedY,pieceToMove);
 
 }
+
+
 
 void moveMode() {
 
@@ -595,35 +611,63 @@ void moveMode() {
 
 		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
 			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
+
 			if (selectedX == chosenX && selectedY == chosenY){
 				//same piece selected, cancel the move
+
+				//clear the red highlighting, set chosen piece to nothing
+				highlightSquare(selectedX,selectedY);
+				chosenX = 10;
+				chosenY = 10;
+				//end the move
+				break;
 			}
-			else {
+
+			bool valid = validateMove(pieceToMove);
+
+
+			if (valid) {
+				//move is valid so move the piece
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 2;
+				//clear the red highlighting, set chosen piece to nothing
+				highlightSquare(selectedX,selectedY);
+				chosenX = 10;
+				chosenY = 10;
+				//end the move
+				break;
 			}
-			//clear the red highlighting, set chosen piece to nothing
-			highlightSquare(selectedX,selectedY);
-			chosenX = 10;
-			chosenY = 10;
-			//end the move
-			break;
 		}
+
+
 		else if (currentplayer ==2 && digitalRead(JOY2_SEL)==0){
 			while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
+
 			if (selectedX == chosenX && selectedY == chosenY){
 				//same piece selected, cancel the move
+
+				//clear the red highlighting, set chosen piece to nothing
+				highlightSquare(selectedX,selectedY);
+				chosenX = 10;
+				chosenY = 10;
+				//end the move
+				break;
 			}
-			else {
+
+			bool valid = validateMove(pieceToMove);
+
+			if (valid) {
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 1;
+				//clear the red highlighting, set chosen piece to nothing
+				highlightSquare(selectedX,selectedY);
+				chosenX = 10;
+				chosenY = 10;
+				//end the move
+				break;
 			}
-			//clear the red highlighting, set chosen piece to nothing
-			highlightSquare(selectedX,selectedY);
-			chosenX = 10;
-			chosenY = 10;
-			//end the move
-			break;
+
+
 		}
 	}
 
