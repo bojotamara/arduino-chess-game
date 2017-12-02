@@ -343,6 +343,9 @@ void highlightSquare(int squarex, int squarey, uint16_t bordercolor) {
 	else if (bordercolor == GREEN) {
 		tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, GREEN);
 	}
+	else if (bordercolor == 0x600F){
+		tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, bordercolor );
+	}
 	else if (currentplayer == 1 ) {
 		tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, YELLOW);
 	}
@@ -604,6 +607,9 @@ void moveMode() {
 	highlightSquare(chosenX,chosenY,GREEN);
 	//green for valid square chosen
 
+	//show valid moves
+	highlightValid(pieceToMove);
+
 
 	while(true) {
 		scroll();
@@ -622,8 +628,7 @@ void moveMode() {
 				//end the move
 				break;
 			}
-
-			bool valid = validateMove(pieceToMove);
+			bool valid = validateMove(pieceToMove,selectedX,selectedY);
 
 
 			if (valid) {
@@ -636,6 +641,10 @@ void moveMode() {
 				chosenY = 10;
 				//end the move
 				break;
+			}
+			else if(!valid){
+				dispTips("invalidmove");
+				dispTips("move");
 			}
 		}
 
@@ -654,7 +663,7 @@ void moveMode() {
 				break;
 			}
 
-			bool valid = validateMove(pieceToMove);
+			bool valid = validateMove(pieceToMove,selectedX,selectedY);
 
 			if (valid) {
 				movePiece(chosenX,chosenY,pieceToMove);
