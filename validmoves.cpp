@@ -54,7 +54,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 void highlightValid(int pieceToMove){
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
-      Serial.println(validateMove(pieceToMove, i, j));
+      //Serial.println(validateMove(pieceToMove, i, j));
       if(validateMove(pieceToMove, i, j)){
         highlightSquare(i,j,0x600F);
       }
