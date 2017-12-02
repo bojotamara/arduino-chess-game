@@ -6,7 +6,7 @@
 #include "lcd_image.h"
 
 #include "chessfunctions.h"
-
+#include "validmoves.h"
 /*
 ================================================================================
 LCD STUFF
@@ -554,39 +554,7 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 
 }
 
-/*
-Function that returns a boolean based on whether or not a move is valid for
-a specified piece
-*/
-bool validateMove(int piecetomove) {
-	bool valid = false;
 
-	switch (piecetomove) {
-		case W_PAWN:
-			// valid if pawn is moved forward on an empty space
-			if (board[selectedY][selectedX] == EMPTY && selectedX == chosenX && selectedY == chosenY - 1){
-				valid = true;
-			}
-			//valid if diagonal, and pawn eats opponent
-			else if ((selectedX == chosenX -1 || selectedX == chosenX + 1) && selectedY == chosenY - 1 && board[selectedY][selectedX] < 0 ) {
-				valid = true;
-			}
-			break;
-		case B_PAWN:
-			// valid if pawn is moved forward on an empty space
-			if (board[selectedY][selectedX] == EMPTY && selectedX == chosenX && selectedY == chosenY + 1){
-				valid = true;
-			}
-			//valid if diagonal, and pawn eats opponent
-			else if ((selectedX == chosenX -1 || selectedX == chosenX + 1) && selectedY == chosenY + 1 && board[selectedY][selectedX] > 0 ) {
-				valid = true;
-			}
-			break;
-		default : valid = true; // just so when working on this, the other moves will always be valid
-	}
-
-	return valid;
-}
 
 void moveMode() {
 

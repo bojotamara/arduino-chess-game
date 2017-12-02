@@ -2,6 +2,16 @@
 #define _CHESSFUNCTIONS_H
 
 extern int currentplayer;
+//2-D array that represents the board
+extern int board [8][8];
+
+// hold the position of square selected
+extern int selectedY;
+extern int oldSelectedY;
+extern int selectedX;
+extern int oldSelectedX;
+extern int chosenX;
+extern int chosenY;
 
 void drawBoard();
 
