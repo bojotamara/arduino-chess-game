@@ -21,43 +21,43 @@
 Function that returns a boolean based on whether or not a move is valid for
 a specified piece
 */
-bool validateMove(int piecetomove) {
+bool validateMove(int piecetomove, int selX, int selY) {
 	bool valid = false;
 
 	switch (piecetomove) {
 		case W_PAWN:
 			// valid if pawn is moved forward on an empty space
-			if (board[selectedY][selectedX] == EMPTY && selectedX == chosenX && selectedY == chosenY - 1){
+			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY - 1){
 				valid = true;
 			}
 			//valid if diagonal, and pawn eats opponent
-			else if ((selectedX == chosenX -1 || selectedX == chosenX + 1) && selectedY == chosenY - 1 && board[selectedY][selectedX] < 0 ) {
+			else if ((selX == chosenX -1 || selX == chosenX + 1) && selY == chosenY - 1 && board[selY][selX] < 0 ) {
 				valid = true;
 			}
 			break;
 		case B_PAWN:
 			// valid if pawn is moved forward on an empty space
-			if (board[selectedY][selectedX] == EMPTY && selectedX == chosenX && selectedY == chosenY + 1){
+			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY + 1){
 				valid = true;
 			}
 			//valid if diagonal, and pawn eats opponent
-			else if ((selectedX == chosenX -1 || selectedX == chosenX + 1) && selectedY == chosenY + 1 && board[selectedY][selectedX] > 0 ) {
+			else if ((selX == chosenX -1 || selX == chosenX + 1) && selY == chosenY + 1 && board[selY][selX] > 0 ) {
 				valid = true;
 			}
 			break;
 		default : valid = true; // just so when working on this, the other moves will always be valid
 	}
 
-  if(!valid){
-    dispTips("invalidmove");
-  }
 	return valid;
 }
 
-void highlightValid(){
+void highlightValid(int pieceToMove){
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
-
+      Serial.println(validateMove(pieceToMove, i, j));
+      if(validateMove(pieceToMove, i, j)){
+        highlightSquare(i,j,0x600F);
+      }
     }
   }
 
