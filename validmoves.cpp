@@ -26,7 +26,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 
 	switch (piecetomove) {
 		//need to work on pawns moving 2 spaces on first turn, and leater en passant
-		case W_PAWN || B_PAWN:
+		case W_PAWN:
 			// valid if pawn is moved forward on an empty space
 			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY - 1){
 				valid = true;
@@ -77,7 +77,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 				valid =true;
 			}
 			break;
-			
+
 		case B_KNIGHT:
 			//valid for 2 blocks up/down and 1 to the right/left
 			if(selX==chosenX+1 && selY==chosenY+2){
@@ -94,6 +94,23 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			}
 			break;
 
+		case W_BISHOP:
+			//diagonals, as long as square is empty and path is unobstructed
+			for(int i=-7; i<8;i++){
+				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					valid=true;
+				}
+			}
+		break;
+
+		case B_BISHOP:
+			//diagonals, as long as square is empty and path is unobstructed
+			for(int i=-7; i<8;i++){
+				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					valid=true;
+				}
+			}
+		break;
 
 		default : valid = true; // just so when working on this, the other moves will always be valid
 	}
