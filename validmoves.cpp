@@ -48,5 +48,17 @@ bool validateMove(int piecetomove) {
 		default : valid = true; // just so when working on this, the other moves will always be valid
 	}
 
+  if(!valid){
+    dispTips("invalidmove");
+  }
 	return valid;
+}
+
+void highlightValid(){
+  for (int i=0; i<8; i++){
+    for(int j=0; j<8; j++){
+
+    }
+  }
+
 }

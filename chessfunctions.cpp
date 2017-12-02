@@ -376,7 +376,7 @@ void dispTips(String tip){
 	tft.setCursor(BOARD_SIZE+5,60);
 	tft.setTextSize(1);
 
-	if (tip =="wrongpiece" || tip == "emptysquare"){
+	if (tip =="wrongpiece" || tip == "emptysquare" || tip == "invalidmove"){
 		highlightSquare(selectedX,selectedY,RED);
 		if(tip == "wrongpiece"){
 			tft.println("Oops! You");
@@ -399,6 +399,16 @@ void dispTips(String tip){
 			tft.println("piece to");
 			tft.setCursor(BOARD_SIZE+5,90);
 			tft.println("move!");
+		}
+		else if(tip == "invalidmove"){
+			tft.println("Oops, you");
+			tft.setCursor(BOARD_SIZE+5,70);
+			tft.println("chose an");
+			tft.setCursor(BOARD_SIZE+5,80);
+			tft.println("invalid spot");
+			tft.setCursor(BOARD_SIZE+5,90);
+			tft.println("to move to");
+
 		}
 		delay(2000);
 		unhighlightSquare(selectedX,selectedY);
@@ -431,6 +441,7 @@ void dispTips(String tip){
 		tft.println("piece");
 
 	}
+
 
 
 
