@@ -76,6 +76,21 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			else if(selX==chosenX-1 && selY==chosenY-2){
 				valid =true;
 			}
+
+			//valid for 2 blocks left/right and 1 up/down
+			if(selY==chosenY+1 && selX==chosenX+2){
+				valid =true;
+			}
+			else if(selY==chosenY+1 && selX==chosenX-2){
+				valid =true;
+			}
+			else if(selY==chosenY-1 && selX==chosenX+2){
+				valid =true;
+			}
+			else if(selY==chosenY-1 && selX==chosenX-2){
+				valid =true;
+			}
+			
 			break;
 
 		case B_KNIGHT:
@@ -92,6 +107,21 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			else if(selX==chosenX-1 && selY==chosenY-2){
 				valid =true;
 			}
+
+			//valid for 2 blocks left/right and 1 up/down
+			if(selY==chosenY+1 && selX==chosenX+2){
+				valid =true;
+			}
+			else if(selY==chosenY+1 && selX==chosenX-2){
+				valid =true;
+			}
+			else if(selY==chosenY-1 && selX==chosenX+2){
+				valid =true;
+			}
+			else if(selY==chosenY-1 && selX==chosenX-2){
+				valid =true;
+			}
+
 			break;
 
 		case W_BISHOP:
@@ -166,6 +196,8 @@ bool validateMove(int piecetomove, int selX, int selY) {
 
 bool checkObstruction(int piece) {
 	bool valid = true;
+
+	// checking the obstruction for vertical or horizontal lines of attack
 	if (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) {
 
 	}
