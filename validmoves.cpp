@@ -25,7 +25,8 @@ bool validateMove(int piecetomove, int selX, int selY) {
 	bool valid = false;
 
 	switch (piecetomove) {
-		case W_PAWN:
+		//need to work on pawns moving 2 spaces on first turn, and leater en passant
+		case W_PAWN || B_PAWN:
 			// valid if pawn is moved forward on an empty space
 			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY - 1){
 				valid = true;
@@ -45,6 +46,55 @@ bool validateMove(int piecetomove, int selX, int selY) {
 				valid = true;
 			}
 			break;
+
+		//need to work on killing opponent, and checking for pieces blocking path
+		case W_ROOK:
+			//valid if moved horizontally or vertically but not both
+			if (selX==chosenX || selY==chosenY){
+				valid = true;
+			}
+			break;
+
+		case B_ROOK:
+			//valid if moved horizontally or vertically but not both
+			if (selX==chosenX || selY==chosenY){
+				valid = true;
+			}
+			break;
+
+		case W_KNIGHT:
+			//valid for 2 blocks up/down and 1 to the right/left
+			if(selX==chosenX+1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX+1 && selY==chosenY-2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY-2){
+				valid =true;
+			}
+			break;
+			
+		case B_KNIGHT:
+			//valid for 2 blocks up/down and 1 to the right/left
+			if(selX==chosenX+1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX+1 && selY==chosenY-2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY+2){
+				valid =true;
+			}
+			else if(selX==chosenX-1 && selY==chosenY-2){
+				valid =true;
+			}
+			break;
+
+
 		default : valid = true; // just so when working on this, the other moves will always be valid
 	}
 
