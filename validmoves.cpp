@@ -99,18 +99,20 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			for(int i=-7; i<8;i++){
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
 					valid=true;
+					break;
 				}
 			}
-		break;
+
 
 		case B_BISHOP:
 			//diagonals, as long as square is empty and path is unobstructed
 			for(int i=-7; i<8;i++){
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
 					valid=true;
+					break;
 				}
 			}
-		break;
+
 
 		case W_KING:
 			//valid for 2 blocks up/down and 1 to the right/left
@@ -119,12 +121,36 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			}
 			break;
 
-			case B_KING:
-				//valid for 2 blocks up/down and 1 to the right/left
-				if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] == EMPTY){
-					valid=true;
-				}
+		case B_KING:
+			//valid for 2 blocks up/down and 1 to the right/left
+			if(abs(selX-chosenX)<=1 && abs(selY-chosenY)<=1 && board[selY][selX] == EMPTY){
+				valid=true;
+			}
+			break;
+
+		case W_QUEEN:
+			if (selX==chosenX || selY==chosenY){
+				valid = true;
 				break;
+			}
+			for(int i=-7; i<8;i++){
+				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					valid=true;
+					break;
+				}
+			}
+
+			case B_QUEEN:
+				if (selX==chosenX || selY==chosenY){
+					valid = true;
+					break;
+				}
+				for(int i=-7; i<8;i++){
+					if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+						valid=true;
+						break;
+					}
+			}
 
 		//default : valid = true; // just so when working on this, the other moves will always be valid
 	}
