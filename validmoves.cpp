@@ -198,8 +198,8 @@ bool checkObstruction(int piece, int selX, int selY) {
 	bool valid = true;
 
 	// checking the obstruction for vertical, upward lines of attack
-	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedX == chosenX && selectedY < chosenY) {
-		for (int i = chosenY-1; i > selectedY; i--) {
+	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selX == chosenX && selY < chosenY) {
+		for (int i = chosenY-1; i > selY; i--) {
 			if (board[i][chosenX] != EMPTY) {
 				valid = false;
 				break;
@@ -208,8 +208,8 @@ bool checkObstruction(int piece, int selX, int selY) {
 	}
 
 	// checking the obstruction for vertical, downward lines of attack
-	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedX == chosenX && selectedY > chosenY) {
-		for (int i = chosenY+1; i < selectedY; i++) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selX == chosenX && selY > chosenY) {
+		for (int i = chosenY+1; i < selY; i++) {
 			if (board[i][chosenX] != EMPTY) {
 				valid = false;
 				break;
@@ -218,8 +218,8 @@ bool checkObstruction(int piece, int selX, int selY) {
 	}
 
 	// horizontal, left lines of attack
-	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX < chosenX) {
-		for (int i = chosenX-1; i > selectedX; i--) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selY == chosenY && selX < chosenX) {
+		for (int i = chosenX-1; i > selX; i--) {
 			if (board[chosenY][i] != EMPTY) {
 				valid = false;
 				break;
@@ -228,8 +228,8 @@ bool checkObstruction(int piece, int selX, int selY) {
 	}
 
 	// horizontal, right lines of attack
-	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX > chosenX) {
-		for (int i = chosenX+1; i < selectedX; i++) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selY == chosenY && selX > chosenX) {
+		for (int i = chosenX+1; i < selX; i++) {
 			if (board[chosenY][i] != EMPTY) {
 				valid = false;
 				break;
@@ -238,9 +238,9 @@ bool checkObstruction(int piece, int selX, int selY) {
 	}
 
 	// diagonal, top right
-	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX > chosenX && selectedY < chosenY) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selX > chosenX && selY < chosenY) {
 		int y = chosenY;
-		for (int i=chosenX + 1; i< selectedX;i++){
+		for (int i=chosenX + 1; i< selX;i++){
 			y -= 1;
 			if (board[y][i] != EMPTY) {
 				valid = false;
@@ -250,9 +250,9 @@ bool checkObstruction(int piece, int selX, int selY) {
 	}
 
 	// diagonal, bottom left
-	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX < chosenX && selectedY > chosenY) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selX < chosenX && selY > chosenY) {
 		int y = chosenY;
-		for (int i=chosenX - 1; i > selectedX;i--){
+		for (int i=chosenX - 1; i > selX;i--){
 			y += 1;
 			if (board[y][i] != EMPTY) {
 				valid = false;
@@ -262,9 +262,9 @@ bool checkObstruction(int piece, int selX, int selY) {
 	}
 
 	// diagonal, top left
-	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX < chosenX && selectedY < chosenY) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selX < chosenX && selY < chosenY) {
 		int y = chosenY;
-		for (int i=chosenX - 1; i > selectedX;i--){
+		for (int i=chosenX - 1; i > selX;i--){
 			y -= 1;
 			if (board[y][i] != EMPTY) {
 				valid = false;
@@ -274,9 +274,9 @@ bool checkObstruction(int piece, int selX, int selY) {
 	}
 
 	// diagonal, bottom right
-	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX > chosenX && selectedY > chosenY) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selX > chosenX && selY > chosenY) {
 		int y = chosenY;
-		for (int i=chosenX + 1; i < selectedX;i++){
+		for (int i=chosenX + 1; i < selX;i++){
 			y += 1;
 			if (board[y][i] != EMPTY) {
 				valid = false;
@@ -288,12 +288,11 @@ bool checkObstruction(int piece, int selX, int selY) {
 	return valid;
 }
 
-
 void highlightValid(int pieceToMove){
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
       //Serial.println(validateMove(pieceToMove, i, j));
-      if(validateMove(pieceToMove,i,j) && checkObstruction(pieceToMove,i,j) ){
+      if ( validateMove(pieceToMove,i,j) && checkObstruction(pieceToMove,i,j) ){
         highlightSquare(i,j,0x600F);
       }
     }
