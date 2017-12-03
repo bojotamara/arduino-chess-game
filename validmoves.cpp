@@ -28,18 +28,33 @@ bool validateMove(int piecetomove, int selX, int selY) {
 		//need to work on pawns moving 2 spaces on first turn, and leater en passant
 		case W_PAWN:
 			// valid if pawn is moved forward on an empty space
-			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY - 1){
-				valid = true;
+			if (board[selY][selX] == EMPTY && selX == chosenX){
+				//normal move forward
+				if (selY == chosenY -1) {
+					valid = true;
+				}
+				//2 spaces at the beginning
+				else if (selY == chosenY - 2 && chosenY == 6 && board[selY+1][selX] == EMPTY) {
+					valid = true;
+				}
 			}
 			//valid if diagonal, and pawn eats opponent
 			else if ((selX == chosenX -1 || selX == chosenX + 1) && selY == chosenY - 1 && board[selY][selX] < 0 ) {
 				valid = true;
 			}
+
 			break;
 		case B_PAWN:
 			// valid if pawn is moved forward on an empty space
-			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY + 1){
-				valid = true;
+			if (board[selY][selX] == EMPTY && selX == chosenX){
+				//normal move forward
+				if (selY == chosenY + 1) {
+					valid = true;
+				}
+				//2 spaces at the beginning
+				else if (selY == chosenY + 2 && chosenY == 1 && board[selY-1][selX] == EMPTY) {
+					valid = true;
+				}
 			}
 			//valid if diagonal, and pawn eats opponent
 			else if ((selX == chosenX -1 || selX == chosenX + 1) && selY == chosenY + 1 && board[selY][selX] > 0 ) {
