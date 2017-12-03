@@ -215,6 +215,24 @@ bool checkObstruction(int piece, int selX, int selY) {
 		}
 	}
 
+	// horizontal, left lines of attack
+	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX < chosenX) {
+		for (int i = chosenX-1; i > selectedX; i--) {
+			if (board[chosenY][i] != EMPTY) {
+				valid = false;
+			}
+		}
+	}
+
+	// horizontal, right lines of attack
+	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX > chosenX) {
+		for (int i = chosenX+1; i < selectedX; i++) {
+			if (board[chosenY][i] != EMPTY) {
+				valid = false;
+			}
+		}
+	}
+
 	return valid;
 }
 
