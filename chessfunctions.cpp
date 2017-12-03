@@ -629,12 +629,8 @@ void moveMode() {
 				//end the move
 				break;
 			}
-			bool valid = validateMove(pieceToMove,selectedX,selectedY);
-			if (valid == true) {
-				//valid = checkObstruction(pieceToMove);
-			}
 
-
+			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
 
 			if (valid) {
 				//move is valid so move the piece
@@ -668,7 +664,7 @@ void moveMode() {
 				break;
 			}
 
-			bool valid = validateMove(pieceToMove,selectedX,selectedY);
+			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
 
 			if (valid) {
 				movePiece(chosenX,chosenY,pieceToMove);

@@ -90,7 +90,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			else if(selY==chosenY-1 && selX==chosenX-2){
 				valid =true;
 			}
-			
+
 			break;
 
 		case B_KNIGHT:
@@ -194,22 +194,36 @@ bool validateMove(int piecetomove, int selX, int selY) {
 	return valid;
 }
 
-bool checkObstruction(int piece) {
+bool checkObstruction(int piece, int selX, int selY) {
 	bool valid = true;
 
-	// checking the obstruction for vertical or horizontal lines of attack
-	if (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) {
+	// checking the obstruction for vertical, upward lines of attack
+	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedX == chosenX && selectedY < chosenY) {
+		for (int i = chosenY-1; i > selectedY; i--) {
+			if (board[i][chosenX] != EMPTY) {
+				valid = false;
+			}
+		}
+	}
 
+	// checking the obstruction for vertical, downward lines of attack
+	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedX == chosenX && selectedY > chosenY) {
+		for (int i = chosenY+1; i < selectedY; i++) {
+			if (board[i][chosenX] != EMPTY) {
+				valid = false;
+			}
+		}
 	}
 
 	return valid;
 }
 
+
 void highlightValid(int pieceToMove){
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
       //Serial.println(validateMove(pieceToMove, i, j));
-      if(validateMove(pieceToMove, i, j)){
+      if(validateMove(pieceToMove,i,j) && checkObstruction(pieceToMove,i,j) ){
         highlightSquare(i,j,0x600F);
       }
     }
