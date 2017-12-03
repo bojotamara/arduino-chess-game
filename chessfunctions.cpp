@@ -414,7 +414,9 @@ void dispTips(String tip){
 
 		}
 		delay(2000);
-		unhighlightSquare(selectedX,selectedY);
+
+		highlightSquare(selectedX,selectedY, YELLOW);
+
 	}
 	else if(tip=="select"){
 		tft.println("Pick a piece");
@@ -610,7 +612,6 @@ void moveMode() {
 	//show valid moves
 	highlightValid(pieceToMove);
 
-
 	while(true) {
 		scroll();
 
@@ -628,8 +629,8 @@ void moveMode() {
 				//end the move
 				break;
 			}
-			bool valid = validateMove(pieceToMove,selectedX,selectedY);
 
+			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
 
 			if (valid) {
 				//move is valid so move the piece
@@ -663,7 +664,7 @@ void moveMode() {
 				break;
 			}
 
-			bool valid = validateMove(pieceToMove,selectedX,selectedY);
+			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
 
 			if (valid) {
 				movePiece(chosenX,chosenY,pieceToMove);

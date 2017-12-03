@@ -3,6 +3,8 @@
 
 bool validateMove(int piecetomove, int selX, int selY);
 
+bool checkObstruction(int piece, int selX, int selY );
+
 void highlightValid(int pieceToMove);
 
 #endif
