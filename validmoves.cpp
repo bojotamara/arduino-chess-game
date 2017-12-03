@@ -202,33 +202,85 @@ bool checkObstruction(int piece, int selX, int selY) {
 		for (int i = chosenY-1; i > selectedY; i--) {
 			if (board[i][chosenX] != EMPTY) {
 				valid = false;
+				break;
 			}
 		}
 	}
 
 	// checking the obstruction for vertical, downward lines of attack
-	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedX == chosenX && selectedY > chosenY) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedX == chosenX && selectedY > chosenY) {
 		for (int i = chosenY+1; i < selectedY; i++) {
 			if (board[i][chosenX] != EMPTY) {
 				valid = false;
+				break;
 			}
 		}
 	}
 
 	// horizontal, left lines of attack
-	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX < chosenX) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX < chosenX) {
 		for (int i = chosenX-1; i > selectedX; i--) {
 			if (board[chosenY][i] != EMPTY) {
 				valid = false;
+				break;
 			}
 		}
 	}
 
 	// horizontal, right lines of attack
-	if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX > chosenX) {
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_ROOK) && selectedY == chosenY && selectedX > chosenX) {
 		for (int i = chosenX+1; i < selectedX; i++) {
 			if (board[chosenY][i] != EMPTY) {
 				valid = false;
+				break;
+			}
+		}
+	}
+
+	// diagonal, top right
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX > chosenX && selectedY < chosenY) {
+		int y = chosenY;
+		for (int i=chosenX + 1; i< selectedX;i++){
+			y -= 1;
+			if (board[y][i] != EMPTY) {
+				valid = false;
+				break;
+			}
+		}
+	}
+
+	// diagonal, bottom left
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX < chosenX && selectedY > chosenY) {
+		int y = chosenY;
+		for (int i=chosenX - 1; i > selectedX;i--){
+			y += 1;
+			if (board[y][i] != EMPTY) {
+				valid = false;
+				break;
+			}
+		}
+	}
+
+	// diagonal, top left
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX < chosenX && selectedY < chosenY) {
+		int y = chosenY;
+		for (int i=chosenX - 1; i > selectedX;i--){
+			y -= 1;
+			if (board[y][i] != EMPTY) {
+				valid = false;
+				break;
+			}
+		}
+	}
+
+	// diagonal, bottom right
+	else if ( (abs(piece) == W_QUEEN || abs(piece) == W_BISHOP) && selectedX > chosenX && selectedY > chosenY) {
+		int y = chosenY;
+		for (int i=chosenX + 1; i < selectedX;i++){
+			y += 1;
+			if (board[y][i] != EMPTY) {
+				valid = false;
+				break;
 			}
 		}
 	}
