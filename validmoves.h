@@ -7,4 +7,6 @@ bool checkObstruction(int piece, int selX, int selY );
 
 void highlightValid(int pieceToMove);
 
+void unhighlightValid(int pieceToMove);
+
 #endif

@@ -28,18 +28,33 @@ bool validateMove(int piecetomove, int selX, int selY) {
 		//need to work on pawns moving 2 spaces on first turn, and leater en passant
 		case W_PAWN:
 			// valid if pawn is moved forward on an empty space
-			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY - 1){
-				valid = true;
+			if (board[selY][selX] == EMPTY && selX == chosenX){
+				//normal move forward
+				if (selY == chosenY -1) {
+					valid = true;
+				}
+				//2 spaces at the beginning
+				else if (selY == chosenY - 2 && chosenY == 6 && board[selY+1][selX] == EMPTY) {
+					valid = true;
+				}
 			}
 			//valid if diagonal, and pawn eats opponent
 			else if ((selX == chosenX -1 || selX == chosenX + 1) && selY == chosenY - 1 && board[selY][selX] < 0 ) {
 				valid = true;
 			}
+
 			break;
 		case B_PAWN:
 			// valid if pawn is moved forward on an empty space
-			if (board[selY][selX] == EMPTY && selX == chosenX && selY == chosenY + 1){
-				valid = true;
+			if (board[selY][selX] == EMPTY && selX == chosenX){
+				//normal move forward
+				if (selY == chosenY + 1) {
+					valid = true;
+				}
+				//2 spaces at the beginning
+				else if (selY == chosenY + 2 && chosenY == 1 && board[selY-1][selX] == EMPTY) {
+					valid = true;
+				}
 			}
 			//valid if diagonal, and pawn eats opponent
 			else if ((selX == chosenX -1 || selX == chosenX + 1) && selY == chosenY + 1 && board[selY][selX] > 0 ) {
@@ -127,7 +142,13 @@ bool validateMove(int piecetomove, int selX, int selY) {
 		case W_BISHOP:
 			//diagonals, as long as square is empty and path is unobstructed
 			for(int i=-7; i<8;i++){
+
+				if(i==0) continue;//if i is 0, skip loop, because otherweise bishop can move up/down/left/right
+
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					Serial.print("i:"); Serial.print(i);
+					Serial.print(" x:"); Serial.print(selX);
+					Serial.print(" y:"); Serial.println(selY);
 					valid=true;
 					break;
 				}
@@ -136,7 +157,9 @@ bool validateMove(int piecetomove, int selX, int selY) {
 
 		case B_BISHOP:
 			//diagonals, as long as square is empty and path is unobstructed
+
 			for(int i=-7; i<8;i++){
+				if(i==0) continue;//if i is 0, skip loop
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
 					valid=true;
 					break;
@@ -159,6 +182,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			break;
 
 		case W_QUEEN:
+		//combination of bishop and rook
 			if (selX==chosenX || selY==chosenY){
 				valid = true;
 				break;
@@ -297,5 +321,15 @@ void highlightValid(int pieceToMove){
       }
     }
   }
+}
 
+void unhighlightValid(int pieceToMove){
+  for (int i=0; i<8; i++){
+    for(int j=0; j<8; j++){
+      //Serial.println(validateMove(pieceToMove, i, j));
+      if ( validateMove(pieceToMove,i,j) && checkObstruction(pieceToMove,i,j) ){
+        unhighlightSquare(i,j);
+      }
+    }
+  }
 }

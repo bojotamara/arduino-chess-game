@@ -551,6 +551,7 @@ void scroll() {
 			unhighlightSquare(oldSelectedX,oldSelectedY);
 		}
 
+
 	}
 
 	delay(100);
@@ -615,18 +616,11 @@ void moveMode() {
 	while(true) {
 		scroll();
 
-
 		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
 			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 
 			if (selectedX == chosenX && selectedY == chosenY){
 				//same piece selected, cancel the move
-
-				//clear the red highlighting, set chosen piece to nothing
-				highlightSquare(selectedX,selectedY);
-				chosenX = 10;
-				chosenY = 10;
-				//end the move
 				break;
 			}
 
@@ -636,10 +630,7 @@ void moveMode() {
 				//move is valid so move the piece
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 2;
-				//clear the red highlighting, set chosen piece to nothing
-				highlightSquare(selectedX,selectedY);
-				chosenX = 10;
-				chosenY = 10;
+
 				//end the move
 				break;
 			}
@@ -655,12 +646,6 @@ void moveMode() {
 
 			if (selectedX == chosenX && selectedY == chosenY){
 				//same piece selected, cancel the move
-
-				//clear the red highlighting, set chosen piece to nothing
-				highlightSquare(selectedX,selectedY);
-				chosenX = 10;
-				chosenY = 10;
-				//end the move
 				break;
 			}
 
@@ -669,10 +654,6 @@ void moveMode() {
 			if (valid) {
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 1;
-				//clear the red highlighting, set chosen piece to nothing
-				highlightSquare(selectedX,selectedY);
-				chosenX = 10;
-				chosenY = 10;
 				//end the move
 				break;
 			}
@@ -681,10 +662,16 @@ void moveMode() {
 				dispTips("move");
 			}
 
-
 		}
+
+
 	}
 
+	unhighlightValid(pieceToMove);
+	// set chosen piece to nothing
+	highlightSquare(selectedX,selectedY);
+	chosenX = 10;
+	chosenY = 10;
 }
 /*
 ================================================================================
