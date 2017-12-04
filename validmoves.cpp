@@ -142,7 +142,13 @@ bool validateMove(int piecetomove, int selX, int selY) {
 		case W_BISHOP:
 			//diagonals, as long as square is empty and path is unobstructed
 			for(int i=-7; i<8;i++){
+
+				if(i==0) continue;//if i is 0, skip loop, because otherweise bishop can move up/down/left/right
+
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
+					Serial.print("i:"); Serial.print(i);
+					Serial.print(" x:"); Serial.print(selX);
+					Serial.print(" y:"); Serial.println(selY);
 					valid=true;
 					break;
 				}
@@ -151,7 +157,9 @@ bool validateMove(int piecetomove, int selX, int selY) {
 
 		case B_BISHOP:
 			//diagonals, as long as square is empty and path is unobstructed
+
 			for(int i=-7; i<8;i++){
+				if(i==0) continue;//if i is 0, skip loop
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
 					valid=true;
 					break;
@@ -174,6 +182,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			break;
 
 		case W_QUEEN:
+		//combination of bishop and rook
 			if (selX==chosenX || selY==chosenY){
 				valid = true;
 				break;
