@@ -1,0 +1,6 @@
+#ifndef _SPECIALCASES_H
+#define _SPECIALCASES_H
+
+//FUNCTIONS GO HERE
+
+#endif
