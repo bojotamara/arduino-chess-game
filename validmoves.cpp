@@ -152,7 +152,7 @@ bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 		case B_BISHOP:
 
 			for(int i=-7; i<8;i++){
-				
+
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
 					valid=true;
 					break;
@@ -336,8 +336,13 @@ bool checkOnBlack(int piece) {
 
 	int fakeboard[8][8];
 	memcpy(fakeboard, board, 8*8*sizeof(int));
-	fakeboard[chosenY][chosenX] = EMPTY;
-	fakeboard[selectedY][selectedX] = piece;
+
+	//if piece not specified, dont rearrange the board
+	if (piece != 20) {
+		fakeboard[chosenY][chosenX] = EMPTY;
+		fakeboard[selectedY][selectedX] = piece;
+	}
+
 
 	//in order for the checks to work, we have to 'fake' the current player
 	//and the chosen for the appropriate situation
@@ -386,8 +391,12 @@ bool checkOnWhite(int piece) {
 	//in order to make the potential move for the check, but not affect the actual board
 	int fakeboard[8][8];
 	memcpy(fakeboard, board, 8*8*sizeof(int));
-	fakeboard[chosenY][chosenX] = EMPTY;
-	fakeboard[selectedY][selectedX] = piece;
+
+	//if piece not specified, dont rearrange the board
+	if (piece != 20) {
+		fakeboard[chosenY][chosenX] = EMPTY;
+		fakeboard[selectedY][selectedX] = piece;
+	}
 
 	//in order for the checks to work, we have to 'fake' the current player
 	//and the chosen for the appropriate situation

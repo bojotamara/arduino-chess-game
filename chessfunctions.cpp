@@ -379,7 +379,7 @@ void dispTips(String tip){
 	tft.setCursor(BOARD_SIZE+5,60);
 	tft.setTextSize(1);
 
-	if (tip =="wrongpiece" || tip == "emptysquare" || tip == "invalidmove"){
+	if (tip =="wrongpiece" || tip == "emptysquare" || tip == "invalidmove" || tip == "leavecheck"){
 		highlightSquare(selectedX,selectedY,RED);
 		if(tip == "wrongpiece"){
 			tft.println("Oops! You");
@@ -411,6 +411,16 @@ void dispTips(String tip){
 			tft.println("invalid spot");
 			tft.setCursor(BOARD_SIZE+5,90);
 			tft.println("to move to");
+
+		}
+		else if(tip == "leavecheck"){
+			tft.println("Oops, you");
+			tft.setCursor(BOARD_SIZE+5,70);
+			tft.println("must get");
+			tft.setCursor(BOARD_SIZE+5,80);
+			tft.println("out of the");
+			tft.setCursor(BOARD_SIZE+5,90);
+			tft.println("check!");
 
 		}
 		delay(2000);
@@ -447,6 +457,15 @@ void dispTips(String tip){
 
 	}
 
+	if (tip == "check") {
+		tft.setTextSize(2);
+		tft.setTextColor(RED,CHOCOBROWN);
+
+		tft.setCursor(BOARD_SIZE+7,200);
+		tft.println("Check!");
+
+
+	}
 
 
 
@@ -605,6 +624,8 @@ void moveMode() {
 		dispTips("move");
 	}
 
+
+
 	chosenX = selectedX;
 	chosenY = selectedY;
 
@@ -637,6 +658,9 @@ void moveMode() {
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 2;
 
+				//clear the check message
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,CHOCOBROWN);
+
 				//end the move
 				break;
 			}
@@ -645,7 +669,8 @@ void moveMode() {
 				dispTips("move");
 			}
 			else if (checkWhite) {
-				//#TODO display message like "ur in check and have to get out of check"
+				dispTips("leavecheck");
+				dispTips("move");
 			}
 		}
 
@@ -665,6 +690,9 @@ void moveMode() {
 			if (valid && !checkBlack) {
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 1;
+
+				//clear the check message
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,CHOCOBROWN);
 				//end the move
 				break;
 			}
@@ -673,7 +701,8 @@ void moveMode() {
 				dispTips("move");
 			}
 			else if (checkBlack) {
-				//#TODO add menu stuff
+				dispTips("leavecheck");
+				dispTips("move");
 			}
 
 		}
@@ -687,14 +716,11 @@ void moveMode() {
 	chosenX = 10;
 	chosenY = 10;
 
-	/*
-	if (checkBlack) {
-		Serial.println("Black king in check");
+	if (checkOnWhite() || checkOnBlack()) {
+		dispTips("check");
 	}
-	if (checkWhite) {
-		Serial.println("White king in check");
-	}
-	*/
+
+
 }
 /*
 ================================================================================

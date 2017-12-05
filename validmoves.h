@@ -9,8 +9,8 @@ void highlightValid(int pieceToMove);
 
 void unhighlightValid(int pieceToMove);
 
-bool checkOnBlack(int piece);
+bool checkOnBlack(int piece = 20);
 
-bool checkOnWhite(int piece);
+bool checkOnWhite(int piece = 20);
 
 #endif
