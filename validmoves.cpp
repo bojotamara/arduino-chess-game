@@ -153,6 +153,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 					break;
 				}
 			}
+			break;
 
 
 		case B_BISHOP:
@@ -165,6 +166,7 @@ bool validateMove(int piecetomove, int selX, int selY) {
 					break;
 				}
 			}
+			break;
 
 
 		case W_KING:
