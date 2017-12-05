@@ -35,6 +35,14 @@ void promote_to_Queen(int x, int y){
   }
 }
 
+void en_passant(){
+  ;//TODO
+}
+
+void castling(){
+  
+}
+
 void checkSpecialcases(int x, int y, int piece){
   // Serial.print(piece); Serial.print(" "); Serial.print(x);
   // Serial.print(" "); Serial.println(y);
