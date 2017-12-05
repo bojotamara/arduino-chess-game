@@ -7,6 +7,7 @@
 
 #include "chessfunctions.h"
 #include "validmoves.h"
+#include "specialcases.h"
 /*
 ================================================================================
 LCD STUFF
@@ -568,6 +569,9 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	board[selectedY][selectedX] = pieceToMove;
 	emptySquare(oldx,oldy);
 	drawPiece(selectedX,selectedY,pieceToMove);
+
+	//check special cases
+	checkSpecialcases(selectedX, selectedY,pieceToMove);
 
 }
 
