@@ -29,7 +29,7 @@ void promote_to_Queen(int x, int y){
     break;
 
     case 2:
-      board[y][x]=-B_QUEEN;
+      board[y][x] = B_QUEEN;
       drawPiece(x,y,B_QUEEN);
     break;
   }
