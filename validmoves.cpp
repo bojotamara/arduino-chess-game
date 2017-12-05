@@ -42,8 +42,8 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			else if ((selX == chosenX -1 || selX == chosenX + 1) && selY == chosenY - 1 && board[selY][selX] < 0 ) {
 				valid = true;
 			}
-
 			break;
+
 		case B_PAWN:
 			// valid if pawn is moved forward on an empty space
 			if (board[selY][selX] == EMPTY && selX == chosenX){
@@ -105,7 +105,6 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			else if(selY==chosenY-1 && selX==chosenX-2){
 				valid =true;
 			}
-
 			break;
 
 		case B_KNIGHT:
@@ -136,19 +135,13 @@ bool validateMove(int piecetomove, int selX, int selY) {
 			else if(selY==chosenY-1 && selX==chosenX-2){
 				valid =true;
 			}
-
 			break;
 
 		case W_BISHOP:
-			//diagonals, as long as square is empty and path is unobstructed
+			//diagonals, so (x,y) = (x+/-i,y+/-i) or (x+/-i,y-/+i)
 			for(int i=-7; i<8;i++){
 
-				if(i==0) continue;//if i is 0, skip loop, because otherweise bishop can move up/down/left/right
-
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
-					Serial.print("i:"); Serial.print(i);
-					Serial.print(" x:"); Serial.print(selX);
-					Serial.print(" y:"); Serial.println(selY);
 					valid=true;
 					break;
 				}
@@ -157,10 +150,9 @@ bool validateMove(int piecetomove, int selX, int selY) {
 
 
 		case B_BISHOP:
-			//diagonals, as long as square is empty and path is unobstructed
 
 			for(int i=-7; i<8;i++){
-				if(i==0) continue;//if i is 0, skip loop
+				
 				if(selX==chosenX+i && selY==chosenY+i || selX==chosenX-i && selY == chosenY+i){
 					valid=true;
 					break;
