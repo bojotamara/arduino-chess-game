@@ -380,7 +380,7 @@ void dispTips(String tip){
 	tft.setCursor(BOARD_SIZE+5,60);
 	tft.setTextSize(1);
 
-	if (tip =="wrongpiece" || tip == "emptysquare" || tip == "invalidmove"){
+	if (tip =="wrongpiece" || tip == "emptysquare" || tip == "invalidmove" || tip == "leavecheck"){
 		highlightSquare(selectedX,selectedY,RED);
 		if(tip == "wrongpiece"){
 			tft.println("Oops! You");
@@ -412,6 +412,16 @@ void dispTips(String tip){
 			tft.println("invalid spot");
 			tft.setCursor(BOARD_SIZE+5,90);
 			tft.println("to move to");
+
+		}
+		else if(tip == "leavecheck"){
+			tft.println("Oops, you");
+			tft.setCursor(BOARD_SIZE+5,70);
+			tft.println("must get");
+			tft.setCursor(BOARD_SIZE+5,80);
+			tft.println("out of the");
+			tft.setCursor(BOARD_SIZE+5,90);
+			tft.println("check!");
 
 		}
 		delay(2000);
@@ -447,6 +457,7 @@ void dispTips(String tip){
 		tft.println("piece");
 	}
 
+
 	else if(tip == "promotion"){
 		tft.println("Your pawn");
 		tft.setCursor(BOARD_SIZE+5,70);
@@ -455,10 +466,16 @@ void dispTips(String tip){
 		tft.println("promoted to");
 		tft.setCursor(BOARD_SIZE+5,90);
 		tft.println("a queen!");
+
 	}
+ 
+  if (tip == "check") {
+    tft.setTextSize(2);
+    tft.setTextColor(RED,CHOCOBROWN);
 
-
-
+    tft.setCursor(BOARD_SIZE+7,200);
+    tft.println("Check!");
+   }
 }
 
 /*
@@ -586,7 +603,8 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 
 
 void moveMode() {
-
+	bool checkBlack;
+	bool checkWhite;
 
 	int pieceToMove = board[selectedY][selectedX];
 	if (pieceToMove == EMPTY) {
@@ -616,6 +634,8 @@ void moveMode() {
 		dispTips("move");
 	}
 
+
+
 	chosenX = selectedX;
 	chosenY = selectedY;
 
@@ -636,18 +656,30 @@ void moveMode() {
 				break;
 			}
 
-			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
+			checkWhite = checkOnWhite(pieceToMove);
 
-			if (valid) {
+			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
+
+			Serial.println(checkWhite);
+			Serial.println(valid);
+
+			if (valid && !checkWhite) {
 				//move is valid so move the piece
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 2;
 
+				//clear the check message
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,CHOCOBROWN);
+
 				//end the move
 				break;
 			}
-			else if(!valid){
+			else if(!valid && !checkWhite){
 				dispTips("invalidmove");
+				dispTips("move");
+			}
+			else if (checkWhite) {
+				dispTips("leavecheck");
 				dispTips("move");
 			}
 		}
@@ -661,16 +693,25 @@ void moveMode() {
 				break;
 			}
 
-			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
+			checkBlack = checkOnBlack(pieceToMove);
 
-			if (valid) {
+			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
+
+			if (valid && !checkBlack) {
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 1;
+
+				//clear the check message
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,CHOCOBROWN);
 				//end the move
 				break;
 			}
-			else if(!valid){
+			else if(!valid && !checkBlack){
 				dispTips("invalidmove");
+				dispTips("move");
+			}
+			else if (checkBlack) {
+				dispTips("leavecheck");
 				dispTips("move");
 			}
 
@@ -684,6 +725,12 @@ void moveMode() {
 	highlightSquare(selectedX,selectedY);
 	chosenX = 10;
 	chosenY = 10;
+
+	if (checkOnWhite() || checkOnBlack()) {
+		dispTips("check");
+	}
+
+
 }
 /*
 ================================================================================
