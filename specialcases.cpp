@@ -53,7 +53,6 @@ void checkSpecialcases(int x, int y, int piece){
         promote_to_Queen(x,y);
         dispTips("promotion");
         delay(1000);
-
       }
     break;
   }
