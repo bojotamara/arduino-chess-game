@@ -43,12 +43,17 @@ void checkSpecialcases(int x, int y, int piece){
     case W_PAWN:
       if(y==0){
         promote_to_Queen(x,y);
+        dispTips("promotion");
+        delay(1000);
       }
     break;
 
     case B_PAWN:
       if(y==7){
         promote_to_Queen(x,y);
+        dispTips("promotion");
+        delay(1000);
+
       }
     break;
   }

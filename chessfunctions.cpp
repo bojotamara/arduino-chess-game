@@ -445,9 +445,17 @@ void dispTips(String tip){
 		tft.println("a different");
 		tft.setCursor(BOARD_SIZE+5,150);
 		tft.println("piece");
-
 	}
 
+	else if(tip == "promotion"){
+		tft.println("Your pawn");
+		tft.setCursor(BOARD_SIZE+5,70);
+		tft.println("has been");
+		tft.setCursor(BOARD_SIZE+5,80);
+		tft.println("promoted to");
+		tft.setCursor(BOARD_SIZE+5,90);
+		tft.println("a queen!");
+	}
 
 
 
