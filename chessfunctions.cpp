@@ -468,7 +468,7 @@ void dispTips(String tip){
 		tft.println("a queen!");
 
 	}
- 
+
   if (tip == "check") {
     tft.setTextSize(2);
     tft.setTextColor(RED,CHOCOBROWN);
@@ -674,6 +674,7 @@ void moveMode() {
 				//end the move
 				break;
 			}
+
 			else if(!valid && !checkWhite){
 				dispTips("invalidmove");
 				dispTips("move");
