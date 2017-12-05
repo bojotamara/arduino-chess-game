@@ -17,3 +17,19 @@
 #define B_BISHOP -4
 #define B_KING -5
 #define B_QUEEN -6
+
+
+void promote_to_Queen(int x, int y){
+  switch(currentplayer){
+
+    case 1:
+      board[y][x] = W_QUEEN;
+      drawPiece(x,y,W_QUEEN)
+    break;
+
+    case 2:
+      board[y][x]=-B_QUEEN;
+      drawPiece(x,y,B_QUEEN);
+    break;
+  }
+}
