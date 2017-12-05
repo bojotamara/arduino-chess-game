@@ -40,7 +40,7 @@ void en_passant(){
 }
 
 void castling(){
-  
+  ;
 }
 
 void checkSpecialcases(int x, int y, int piece){

@@ -579,7 +579,7 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	drawPiece(selectedX,selectedY,pieceToMove);
 
 	//check special cases
-	checkSpecialcases(selectedX, selectedY,pieceToMove);
+	//checkSpecialcases(selectedX, selectedY,pieceToMove);
 
 }
 
