@@ -25,6 +25,7 @@ void promote_to_Queen(int x, int y){
     case 1:
       board[y][x] = W_QUEEN;
       drawPiece(x,y,W_QUEEN);
+      Serial.print("Position: "); Serial.print(x); Serial.print(" "); Serial.println(y);
     break;
 
     case 2:
@@ -35,9 +36,18 @@ void promote_to_Queen(int x, int y){
 }
 
 void checkSpecialcases(int x, int y, int piece){
+  // Serial.print(piece); Serial.print(" "); Serial.print(x);
+  // Serial.print(" "); Serial.println(y);
+  // Serial.println();
   switch (piece){
     case W_PAWN:
-      if(x==0){
+      if(y==0){
+        promote_to_Queen(x,y);
+      }
+    break;
+
+    case B_PAWN:
+      if(y==7){
         promote_to_Queen(x,y);
       }
     break;
