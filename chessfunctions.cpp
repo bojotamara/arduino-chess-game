@@ -574,7 +574,8 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 
 
 void moveMode() {
-
+	bool checkBlack;
+	bool checkWhite;
 
 	int pieceToMove = board[selectedY][selectedX];
 	if (pieceToMove == EMPTY) {
@@ -624,9 +625,14 @@ void moveMode() {
 				break;
 			}
 
-			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
+			checkWhite = checkOnWhite(pieceToMove);
 
-			if (valid) {
+			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
+
+			Serial.println(checkWhite);
+			Serial.println(valid);
+
+			if (valid && !checkWhite) {
 				//move is valid so move the piece
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 2;
@@ -634,9 +640,12 @@ void moveMode() {
 				//end the move
 				break;
 			}
-			else if(!valid){
+			else if(!valid && !checkWhite){
 				dispTips("invalidmove");
 				dispTips("move");
+			}
+			else if (checkWhite) {
+				//#TODO display message like "ur in check and have to get out of check"
 			}
 		}
 
@@ -649,17 +658,22 @@ void moveMode() {
 				break;
 			}
 
-			bool valid = validateMove(pieceToMove,selectedX,selectedY) && checkObstruction(pieceToMove,selectedX,selectedY);
+			checkBlack = checkOnBlack(pieceToMove);
 
-			if (valid) {
+			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
+
+			if (valid && !checkBlack) {
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 1;
 				//end the move
 				break;
 			}
-			else if(!valid){
+			else if(!valid && !checkBlack){
 				dispTips("invalidmove");
 				dispTips("move");
+			}
+			else if (checkBlack) {
+				//#TODO add menu stuff
 			}
 
 		}
@@ -672,6 +686,15 @@ void moveMode() {
 	highlightSquare(selectedX,selectedY);
 	chosenX = 10;
 	chosenY = 10;
+
+	/*
+	if (checkBlack) {
+		Serial.println("Black king in check");
+	}
+	if (checkWhite) {
+		Serial.println("White king in check");
+	}
+	*/
 }
 /*
 ================================================================================
