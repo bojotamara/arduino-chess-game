@@ -4,4 +4,6 @@
 
 void promote_to_Queen(int x, int y);
 
+void checkSpecialcases(int x, int y, int piece);
+
 #endif

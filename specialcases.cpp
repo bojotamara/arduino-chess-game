@@ -24,12 +24,22 @@ void promote_to_Queen(int x, int y){
 
     case 1:
       board[y][x] = W_QUEEN;
-      drawPiece(x,y,W_QUEEN)
+      drawPiece(x,y,W_QUEEN);
     break;
 
     case 2:
       board[y][x]=-B_QUEEN;
       drawPiece(x,y,B_QUEEN);
+    break;
+  }
+}
+
+void checkSpecialcases(int x, int y, int piece){
+  switch (piece){
+    case W_PAWN:
+      if(x==0){
+        promote_to_Queen(x,y);
+      }
     break;
   }
 }
