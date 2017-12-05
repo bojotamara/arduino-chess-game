@@ -7,6 +7,7 @@
 
 #include "chessfunctions.h"
 #include "validmoves.h"
+#include "specialcases.h"
 /*
 ================================================================================
 LCD STUFF
@@ -454,21 +455,27 @@ void dispTips(String tip){
 		tft.println("a different");
 		tft.setCursor(BOARD_SIZE+5,150);
 		tft.println("piece");
-
-	}
-
-	if (tip == "check") {
-		tft.setTextSize(2);
-		tft.setTextColor(RED,CHOCOBROWN);
-
-		tft.setCursor(BOARD_SIZE+7,200);
-		tft.println("Check!");
-
-
 	}
 
 
+	else if(tip == "promotion"){
+		tft.println("Your pawn");
+		tft.setCursor(BOARD_SIZE+5,70);
+		tft.println("has been");
+		tft.setCursor(BOARD_SIZE+5,80);
+		tft.println("promoted to");
+		tft.setCursor(BOARD_SIZE+5,90);
+		tft.println("a queen!");
 
+	}
+ 
+  if (tip == "check") {
+    tft.setTextSize(2);
+    tft.setTextColor(RED,CHOCOBROWN);
+
+    tft.setCursor(BOARD_SIZE+7,200);
+    tft.println("Check!");
+   }
 }
 
 /*
@@ -587,6 +594,9 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	board[selectedY][selectedX] = pieceToMove;
 	emptySquare(oldx,oldy);
 	drawPiece(selectedX,selectedY,pieceToMove);
+
+	//check special cases
+	checkSpecialcases(selectedX, selectedY,pieceToMove);
 
 }
 
