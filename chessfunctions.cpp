@@ -600,8 +600,6 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 
 }
 
-
-
 void moveMode() {
 	bool checkBlack;
 	bool checkWhite;
@@ -728,7 +726,7 @@ void moveMode() {
 
 	if (checkOnWhite()) {
 		if (checkmate("white")) {
-
+			gameover = 2;
 		}
 		else {
 			dispTips("check");
@@ -737,6 +735,8 @@ void moveMode() {
 	}
 	else if (checkOnBlack()) {
 		if (checkmate("black")) {
+			gameover = 1;
+
 
 		}
 		else {
@@ -746,6 +746,36 @@ void moveMode() {
 	}
 
 
+
+}
+
+void endGame( int player) {
+	unhighlightSquare(selectedX,selectedY);
+	tft.fillRect(BOARD_SIZE,0,DISPLAY_WIDTH-BOARD_SIZE,DISPLAY_HEIGHT,CHOCOBROWN);
+	tft.setTextSize(2);
+	tft.setCursor(BOARD_SIZE+10,10);
+	tft.setTextColor(RED,CHOCOBROWN);
+	tft.println("CHECK");
+	tft.setCursor(BOARD_SIZE+10,30);
+	tft.println("MATE!");
+	tft.setTextSize(3);
+	tft.setCursor(BOARD_SIZE+22,70);
+
+	switch (player) {
+
+		case 1:
+			tft.setTextColor(YELLOW,CHOCOBROWN);
+			tft.println("P1");
+			break;
+		case 2:
+			tft.setTextColor(CYAN,CHOCOBROWN);
+			tft.println("P2");
+			break;
+	}
+
+	tft.setTextSize(2);
+	tft.setCursor(BOARD_SIZE+13,100);
+	tft.println("WINS!");
 
 }
 /*
