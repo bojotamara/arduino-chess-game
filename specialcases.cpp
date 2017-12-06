@@ -63,18 +63,22 @@ bool castling(int x, int y){
     case 1:
       if ( x==0 && y==7 && !p1_leftRookmoved && !p1_kingMoved ){//left rook
         if(board[y][3]==EMPTY && board[y][2]==EMPTY){
-          //need to check if king would be in check along the squares
-          specialmovepiece(4,7,2,7,W_KING);
-          specialmovepiece(0,7,3,7,W_ROOK);
-          return 1;
+          if(!checkOnWhite(3,y) && !checkOnWhite(2,y) && !checkOnWhite(4,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,7,2,7,W_KING);
+            specialmovepiece(0,7,3,7,W_ROOK);
+            return 1;
+          }
         }
       }
       else if ( x==7 && y==7 && !p1_rightRookmoved && !p1_kingMoved ){//right rook
         if(board[y][5]==EMPTY && board[y][6]==EMPTY){
-          //need to check if king would be in check along the squares
-          specialmovepiece(4,7,6,7,W_KING);
-          specialmovepiece(7,7,5,7,W_ROOK);
-          return 1;
+          if(!checkOnWhite(4,y) && !checkOnWhite(5,y) && !checkOnWhite(6,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,7,6,7,W_KING);
+            specialmovepiece(7,7,5,7,W_ROOK);
+            return 1;
+          }
         }
       }
     break;
@@ -82,18 +86,23 @@ bool castling(int x, int y){
     case 2:
       if ( x==0 && y==0 && !p2_leftRookmoved && !p2_kingMoved ){//left rook
         if(board[y][2]==EMPTY && board[y][3]==EMPTY){
-          //need to check if king would be in check along the squares
-          specialmovepiece(4,0,2,0,B_KING);
-          specialmovepiece(0,0,3,0,B_ROOK);
-          return 1;
+          if(!checkOnBlack(2,y) && !checkOnBlack(3,y) && !checkOnBlack(4,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,0,2,0,B_KING);
+            specialmovepiece(0,0,3,0,B_ROOK);
+            return 1;
+          }
+
         }
       }
       else if ( x==7 && y==0 && !p2_rightRookmoved && !p2_kingMoved ){//right rook
         if(board[y][5]==EMPTY && board[y][6]==EMPTY){
-          //need to check if king would be in check along the squares
-          specialmovepiece(4,0,6,0,B_KING);
-          specialmovepiece(7,0,5,0,B_ROOK);
-          return 1;
+          if(!checkOnBlack(4,y) && !checkOnBlack(5,y) && !checkOnBlack(6,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,0,6,0,B_KING);
+            specialmovepiece(7,0,5,0,B_ROOK);
+            return 1;
+          }          
         }
       }
     break;
