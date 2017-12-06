@@ -1,6 +1,8 @@
 #ifndef _CHESSFUNCTIONS_H
 #define _CHESSFUNCTIONS_H
 
+extern int gameover;
+
 extern int currentplayer;
 //2-D array that represents the board
 extern int board [8][8];
@@ -36,5 +38,7 @@ void moveMode();
 void dispCurrentPlayer();
 
 void dispTips(String tip);
+
+void endGame(int player);
 
 #endif

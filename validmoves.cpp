@@ -328,7 +328,7 @@ void unhighlightValid(int pieceToMove){
   }
 }
 
-bool checkOnBlack(int piece) {
+bool checkOnBlack(int piece, int selX, int selY) {
 	bool check = false;
 	int actualChosenX = chosenX;
 	int actualChosenY = chosenY;
@@ -340,7 +340,7 @@ bool checkOnBlack(int piece) {
 	//if piece not specified, dont rearrange the board
 	if (piece != 20) {
 		fakeboard[chosenY][chosenX] = EMPTY;
-		fakeboard[selectedY][selectedX] = piece;
+		fakeboard[selY][selX] = piece;
 	}
 
 
@@ -381,7 +381,7 @@ bool checkOnBlack(int piece) {
 
 }
 
-bool checkOnWhite(int piece) {
+bool checkOnWhite(int piece, int selX, int selY) {
 	bool check = false;
 
 	int actualChosenX = chosenX;
@@ -395,7 +395,7 @@ bool checkOnWhite(int piece) {
 	//if piece not specified, dont rearrange the board
 	if (piece != 20) {
 		fakeboard[chosenY][chosenX] = EMPTY;
-		fakeboard[selectedY][selectedX] = piece;
+		fakeboard[selY][selX] = piece;
 	}
 
 	//in order for the checks to work, we have to 'fake' the current player
@@ -430,5 +430,124 @@ bool checkOnWhite(int piece) {
 	chosenX = actualChosenX;
 	chosenY = actualChosenY;
 	return check;
+
+}
+
+bool checkmate(String color) {
+	bool checkmate = true;
+
+	int actualChosenX = chosenX;
+	int actualChosenY = chosenY;
+	int actualplayer = currentplayer;
+
+
+	//see if white is in checkmate
+	if (color == "white") {
+
+		currentplayer = 1;
+
+		for (int x=0; x < 8; x++ ) {
+			for (int y=0; y<8; y++) {
+
+
+
+				//find the white pieces
+				if (board[y][x] > 0) {
+
+					//again simulating behaviour cuz global variables are dumb
+					chosenX = x;
+					chosenY = y;
+
+
+					for (int a=0; a < 8; a++) {
+						for (int b = 0; b < 8; b++) {
+
+
+							// there's no checkmate if a valid move exists thats not in check
+							if (validateMove(board[y][x],a,b,board) && checkObstruction(board[y][x],a,b,board) && !checkOnWhite(board[y][x],a,b)) {
+								checkmate = false;
+								currentplayer = actualplayer;
+								chosenX = actualChosenX;
+								chosenY = actualChosenY;
+								return checkmate;
+							}
+
+
+
+						}
+					}
+
+
+
+
+
+				}
+
+
+
+
+			}
+		}
+
+
+	}
+
+	else if (color == "black") {
+
+
+		currentplayer = 2;
+
+		for (int x=0; x < 8; x++ ) {
+			for (int y=0; y<8; y++) {
+
+
+
+				//find the black pieces
+				if (board[y][x] < 0) {
+
+					//again simulating behaviour cuz global variables are dumb
+					chosenX = x;
+					chosenY = y;
+
+
+					for (int a=0; a < 8; a++) {
+						for (int b = 0; b < 8; b++) {
+
+
+							// there's no checkmate if a valid move exists thats not in check
+							if (validateMove(board[y][x],a,b,board) && checkObstruction(board[y][x],a,b,board) && !checkOnBlack(board[y][x],a,b)) {
+								checkmate = false;
+								currentplayer = actualplayer;
+								chosenX = actualChosenX;
+								chosenY = actualChosenY;
+								return checkmate;
+							}
+
+
+
+						}
+					}
+
+
+
+
+
+				}
+
+
+
+
+			}
+		}
+
+
+
+	}
+
+
+	currentplayer = actualplayer;
+	chosenX = actualChosenX;
+	chosenY = actualChosenY;
+	return checkmate;
 
 }
