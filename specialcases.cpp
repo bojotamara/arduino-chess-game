@@ -59,14 +59,47 @@ bool castling(int x, int y){
   // Serial.println(p1_leftRookmoved);
   // Serial.println();
 
-  if ( x==0 && y==7 && p1_leftRookmoved==0 ){
-    if(board[y][3]==EMPTY && board[y][2]==EMPTY){
-      //need to check if king would be in check along the squares
-      specialmovepiece(4,7,2,7,W_KING);
-      specialmovepiece(0,7,3,7,W_ROOK);
-      return 1;
-    }
+  switch (currentplayer){
+    case 1:
+      if ( x==0 && y==7 && p1_leftRookmoved==0 ){//left rook
+        if(board[y][3]==EMPTY && board[y][2]==EMPTY){
+          //need to check if king would be in check along the squares
+          specialmovepiece(4,7,2,7,W_KING);
+          specialmovepiece(0,7,3,7,W_ROOK);
+          return 1;
+        }
+      }
+      else if ( x==7 && y==7 && p1_rightRookmoved==0 ){//right rook
+        if(board[y][5]==EMPTY && board[y][6]==EMPTY){
+          //need to check if king would be in check along the squares
+          specialmovepiece(4,7,6,7,W_KING);
+          specialmovepiece(0,7,5,7,W_ROOK);
+          return 1;
+        }
+      }
+    break;
+
+    case 2:
+      if ( x==0 && y==0 && p2_leftRookmoved==0 ){//left rook
+        if(board[y][2]==EMPTY && board[y][3]==EMPTY){
+          //need to check if king would be in check along the squares
+          specialmovepiece(4,0,2,0,B_KING);
+          specialmovepiece(0,0,3,0,B_ROOK);
+          return 1;
+        }
+      }
+      else if ( x==7 && y==0 && p2_rightRookmoved==0 ){//right rook
+        if(board[y][5]==EMPTY && board[y][6]==EMPTY){
+          //need to check if king would be in check along the squares
+          specialmovepiece(4,0,6,0,B_KING);
+          specialmovepiece(0,0,5,0,B_ROOK);
+          return 1;
+        }
+      }
+    break;
   }
+
+
 return 0;
 }
 
@@ -100,6 +133,14 @@ bool checkSpecialcases(int x, int y, int piece){
     break;
 
     case W_KING:
+      if(castling(x,y)){
+        dispTips("castled");
+        delay(2000);
+        return 1;
+      }
+    break;
+
+    case B_KING:
       if(castling(x,y)){
         dispTips("castled");
         delay(2000);
