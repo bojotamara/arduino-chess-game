@@ -161,7 +161,7 @@ void drawBoard() {
 	}
 
 	// fills in right menu
-	tft.fillRect(BOARD_SIZE,0,DISPLAY_WIDTH-BOARD_SIZE,DISPLAY_HEIGHT,CHOCOBROWN);
+	tft.fillRect(BOARD_SIZE,0,DISPLAY_WIDTH-BOARD_SIZE,DISPLAY_HEIGHT,BLACK);
 
 }
 
@@ -362,12 +362,12 @@ void dispCurrentPlayer(){
 
 	switch (currentplayer){
 		case 1:
-			tft.setTextColor(YELLOW,CHOCOBROWN);
+			tft.setTextColor(YELLOW,BLACK);
 			tft.print("P1");
 			break;
 
 		case 2:
-			tft.setTextColor(CYAN,CHOCOBROWN);
+			tft.setTextColor(CYAN,BLACK);
 			tft.print("P2");
 			break;
 	}
@@ -376,7 +376,7 @@ void dispCurrentPlayer(){
 void dispTips(String tip){
 	//keep this I'm using it for checking boundaries when debugging
 	//tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,80,BROWN);
-	tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,120,CHOCOBROWN);
+	tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,120,BLACK);
 	tft.setCursor(BOARD_SIZE+5,60);
 	tft.setTextSize(1);
 
@@ -471,7 +471,7 @@ void dispTips(String tip){
 
   if (tip == "check") {
     tft.setTextSize(2);
-    tft.setTextColor(RED,CHOCOBROWN);
+    tft.setTextColor(RED,BLACK);
 
     tft.setCursor(BOARD_SIZE+7,200);
     tft.println("Check!");
@@ -664,7 +664,7 @@ void moveMode() {
 				currentplayer = 2;
 
 				//clear the check message
-				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,CHOCOBROWN);
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
 
 				//end the move
 				break;
@@ -697,7 +697,7 @@ void moveMode() {
 				currentplayer = 1;
 
 				//clear the check message
-				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,CHOCOBROWN);
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
 				//end the move
 				break;
 			}
@@ -751,10 +751,10 @@ void moveMode() {
 
 void endGame( int player) {
 	unhighlightSquare(selectedX,selectedY);
-	tft.fillRect(BOARD_SIZE,0,DISPLAY_WIDTH-BOARD_SIZE,DISPLAY_HEIGHT,CHOCOBROWN);
+	tft.fillRect(BOARD_SIZE,0,DISPLAY_WIDTH-BOARD_SIZE,DISPLAY_HEIGHT,BLACK);
 	tft.setTextSize(2);
 	tft.setCursor(BOARD_SIZE+10,10);
-	tft.setTextColor(RED,CHOCOBROWN);
+	tft.setTextColor(RED,BLACK);
 	tft.println("CHECK");
 	tft.setCursor(BOARD_SIZE+10,30);
 	tft.println("MATE!");
@@ -764,11 +764,11 @@ void endGame( int player) {
 	switch (player) {
 
 		case 1:
-			tft.setTextColor(YELLOW,CHOCOBROWN);
+			tft.setTextColor(YELLOW,BLACK);
 			tft.println("P1");
 			break;
 		case 2:
-			tft.setTextColor(CYAN,CHOCOBROWN);
+			tft.setTextColor(CYAN,BLACK);
 			tft.println("P2");
 			break;
 	}

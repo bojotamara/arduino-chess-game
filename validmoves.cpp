@@ -490,13 +490,6 @@ bool checkmate(String color) {
 		}
 
 
-
-
-
-		Serial.println(checkmate);
-
-
-
 	}
 
 	else if (color == "black") {
