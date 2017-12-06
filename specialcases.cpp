@@ -35,7 +35,18 @@ void promote_to_Queen(int x, int y){
   }
 }
 
-void checkSpecialcases(int x, int y, int piece){
+void en_passant(){
+  ;//TODO
+}
+
+void castling(){
+  ;
+}
+
+bool checkSpecialcases(int x, int y, int piece){
+  //returns a boolean, to let function in chessfunctions.cpp know that
+  //the movment of pieces has already been taken care of here.
+
   // Serial.print(piece); Serial.print(" "); Serial.print(x);
   // Serial.print(" "); Serial.println(y);
   // Serial.println();
@@ -45,6 +56,7 @@ void checkSpecialcases(int x, int y, int piece){
         promote_to_Queen(x,y);
         dispTips("promotion");
         delay(1000);
+        return 1;
       }
     break;
 
@@ -53,7 +65,9 @@ void checkSpecialcases(int x, int y, int piece){
         promote_to_Queen(x,y);
         dispTips("promotion");
         delay(1000);
+        return 1;
       }
     break;
   }
+  return 0;
 }
