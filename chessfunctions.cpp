@@ -468,7 +468,7 @@ void dispTips(String tip){
 		tft.println("a queen!");
 
 	}
- 
+
   if (tip == "check") {
     tft.setTextSize(2);
     tft.setTextColor(RED,CHOCOBROWN);
@@ -656,12 +656,9 @@ void moveMode() {
 				break;
 			}
 
-			checkWhite = checkOnWhite(pieceToMove);
+			checkWhite = checkOnWhite(pieceToMove,selectedX,selectedY);
 
 			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
-
-			Serial.println(checkWhite);
-			Serial.println(valid);
 
 			if (valid && !checkWhite) {
 				//move is valid so move the piece
@@ -693,7 +690,7 @@ void moveMode() {
 				break;
 			}
 
-			checkBlack = checkOnBlack(pieceToMove);
+			checkBlack = checkOnBlack(pieceToMove,selectedX,selectedY);
 
 			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
 
@@ -726,9 +723,28 @@ void moveMode() {
 	chosenX = 10;
 	chosenY = 10;
 
-	if (checkOnWhite() || checkOnBlack()) {
-		dispTips("check");
+
+
+
+	if (checkOnWhite()) {
+		if (checkmate("white")) {
+
+		}
+		else {
+			dispTips("check");
+		}
+
 	}
+	else if (checkOnBlack()) {
+		if (checkmate("black")) {
+
+		}
+		else {
+			dispTips("check");
+		}
+
+	}
+
 
 
 }
