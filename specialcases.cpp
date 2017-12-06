@@ -73,7 +73,7 @@ bool castling(int x, int y){
         if(board[y][5]==EMPTY && board[y][6]==EMPTY){
           //need to check if king would be in check along the squares
           specialmovepiece(4,7,6,7,W_KING);
-          specialmovepiece(0,7,5,7,W_ROOK);
+          specialmovepiece(7,7,5,7,W_ROOK);
           return 1;
         }
       }
@@ -92,7 +92,7 @@ bool castling(int x, int y){
         if(board[y][5]==EMPTY && board[y][6]==EMPTY){
           //need to check if king would be in check along the squares
           specialmovepiece(4,0,6,0,B_KING);
-          specialmovepiece(0,0,5,0,B_ROOK);
+          specialmovepiece(7,0,5,0,B_ROOK);
           return 1;
         }
       }
