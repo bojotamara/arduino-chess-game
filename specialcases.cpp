@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "chessfunctions.h"
 #include "validmoves.h"
+#include "specialcases.h"
 
 #define EMPTY 0
 
@@ -39,11 +40,34 @@ void en_passant(){
   ;//TODO
 }
 
-void castling(){
-  ;
+void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
+  //function based on movePiece in chessfunctions.cpp but modified to
+  //work for the purpose of castling and other special functions
+  	board[oldy][oldx] = EMPTY;
+  	board[y][x] = piece;
+  	emptySquare(oldx,oldy);
+  	drawPiece(x,y,piece);
+}
+
+void castling(int x, int y){
+  //castling will be handled in a weird way.
+  //If the user wishes to castle, he/she must select the king, and then
+  //highlight the rook to be castled with. If this is possible, the switch will
+  //happen automatically
+
+  if ( x==0 && y==7 && p1_leftRookmoved==0 ){
+    if(board[y][x-1]==EMPTY && board[y][x-2]==EMPTY){
+      //need to check if king would be in check along the squares
+      specialmovepiece(4,7,x-2,y,W_KING);
+      specialmovepiece(0,7,x-1,W_ROOK);
+    }
+  }
+
 }
 
 bool checkSpecialcases(int x, int y, int piece){
+  //input args x,y are the square that the piece will be moved to
+
   //returns a boolean, to let function in chessfunctions.cpp know that
   //the movment of pieces has already been taken care of here.
 
@@ -68,6 +92,17 @@ bool checkSpecialcases(int x, int y, int piece){
         return 1;
       }
     break;
+
+    case W_KING:
+      castling(x,y);
+      dispTips("castled");
+      delay(2000);
+      return 1;
+    break;
+
+    case B_KING:
+    break;
+
   }
   return 0;
 }

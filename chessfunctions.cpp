@@ -469,7 +469,13 @@ void dispTips(String tip){
 
 	}
 
-  if (tip == "check") {
+	else if(tip == "castled"){
+		tft.println("You have");
+		tft.setCursor(BOARD_SIZE+5,70);
+		tft.println("castled!");
+	}
+
+  else if (tip == "check") {
     tft.setTextSize(2);
     tft.setTextColor(RED,BLACK);
 
@@ -594,10 +600,6 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	board[selectedY][selectedX] = pieceToMove;
 	emptySquare(oldx,oldy);
 	drawPiece(selectedX,selectedY,pieceToMove);
-
-	//check special cases
-	//checkSpecialcases(selectedX, selectedY,pieceToMove);
-
 }
 
 void moveMode() {
@@ -664,7 +666,7 @@ void moveMode() {
 			if (specialcase && !checkWhite){
 				//if a special case already happened, that function took care of
 				//moving the pieces already
-				
+
 				//clear the check message
 				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
 				currentplayer=2;
@@ -831,4 +833,11 @@ void setup() {
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 	dispCurrentPlayer();
 	dispTips("select");
+	bool p1_kingMoved=0;
+	bool p1_leftRookmoved=0;
+	bool p1_rightRookmoved=0;
+
+	bool p2_kingMoved=0;
+	bool p2_leftRookmoved=0;
+	bool p2_rightRookmoved=0;
 }
