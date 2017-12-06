@@ -13,7 +13,7 @@ extern bool p2_rightRookmoved;
 
 void promote_to_Queen(int x, int y);
 
-void checkSpecialcases(int x, int y, int piece);
+bool checkSpecialcases(int x, int y, int piece);
 
 void castling();
 

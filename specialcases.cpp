@@ -43,7 +43,7 @@ void castling(){
   ;
 }
 
-void checkSpecialcases(int x, int y, int piece){
+bool checkSpecialcases(int x, int y, int piece){
   // Serial.print(piece); Serial.print(" "); Serial.print(x);
   // Serial.print(" "); Serial.println(y);
   // Serial.println();
@@ -53,6 +53,7 @@ void checkSpecialcases(int x, int y, int piece){
         promote_to_Queen(x,y);
         dispTips("promotion");
         delay(1000);
+        return 1
       }
     break;
 
@@ -61,7 +62,12 @@ void checkSpecialcases(int x, int y, int piece){
         promote_to_Queen(x,y);
         dispTips("promotion");
         delay(1000);
+        return 1;
       }
+    break;
+
+    default:
+      return 0;
     break;
   }
 }
