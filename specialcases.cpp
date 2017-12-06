@@ -59,7 +59,7 @@ void castling(int x, int y){
     if(board[y][x-1]==EMPTY && board[y][x-2]==EMPTY){
       //need to check if king would be in check along the squares
       specialmovepiece(4,7,x-2,y,W_KING);
-      specialmovepiece(0,7,x-1,W_ROOK);
+      specialmovepiece(0,7,x-1,y,W_ROOK);
     }
   }
 
