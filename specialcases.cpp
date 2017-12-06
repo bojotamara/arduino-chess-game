@@ -26,7 +26,7 @@ void promote_to_Queen(int x, int y){
     case 1:
       board[y][x] = W_QUEEN;
       drawPiece(x,y,W_QUEEN);
-      Serial.print("Position: "); Serial.print(x); Serial.print(" "); Serial.println(y);
+      //Serial.print("Position: "); Serial.print(x); Serial.print(" "); Serial.println(y);
     break;
 
     case 2:
@@ -49,20 +49,25 @@ void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
   	drawPiece(x,y,piece);
 }
 
-void castling(int x, int y){
+bool castling(int x, int y){
   //castling will be handled in a weird way.
   //If the user wishes to castle, he/she must select the king, and then
   //highlight the rook to be castled with. If this is possible, the switch will
   //happen automatically
 
+  // Serial.print(x);Serial.print(" "); Serial.print(y);
+  // Serial.println(p1_leftRookmoved);
+  // Serial.println();
+
   if ( x==0 && y==7 && p1_leftRookmoved==0 ){
-    if(board[y][x-1]==EMPTY && board[y][x-2]==EMPTY){
+    if(board[y][3]==EMPTY && board[y][2]==EMPTY){
       //need to check if king would be in check along the squares
-      specialmovepiece(4,7,x-2,y,W_KING);
-      specialmovepiece(0,7,x-1,y,W_ROOK);
+      specialmovepiece(4,7,2,7,W_KING);
+      specialmovepiece(0,7,3,7,W_ROOK);
+      return 1;
     }
   }
-
+return 0;
 }
 
 bool checkSpecialcases(int x, int y, int piece){
@@ -74,6 +79,7 @@ bool checkSpecialcases(int x, int y, int piece){
   // Serial.print(piece); Serial.print(" "); Serial.print(x);
   // Serial.print(" "); Serial.println(y);
   // Serial.println();
+
   switch (piece){
     case W_PAWN:
       if(y==0){
@@ -94,14 +100,15 @@ bool checkSpecialcases(int x, int y, int piece){
     break;
 
     case W_KING:
-      castling(x,y);
-      dispTips("castled");
-      delay(2000);
-      return 1;
+      if(castling(x,y)){
+        dispTips("castled");
+        delay(2000);
+        return 1;
+      }
     break;
 
-    case B_KING:
-    break;
+    // case B_KING:
+    // break;
 
   }
   return 0;

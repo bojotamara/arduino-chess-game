@@ -116,6 +116,14 @@ int selectedX = 0;
 int oldSelectedX;
 int chosenX=10;
 int chosenY=10;
+
+//castling
+bool p1_kingMoved=0;
+bool p1_leftRookmoved=0;
+bool p1_rightRookmoved=0;
+bool p2_kingMoved=0;
+bool p2_leftRookmoved=0;
+bool p2_rightRookmoved=0;
 /*
 ================================================================================
 /*
@@ -661,8 +669,7 @@ void moveMode() {
 			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
 
 			bool specialcase = checkSpecialcases(selectedX,selectedY,pieceToMove);
-			Serial.print("value of boolean: "); Serial.println(specialcase);
-
+			
 			if (specialcase && !checkWhite){
 				//if a special case already happened, that function took care of
 				//moving the pieces already
@@ -833,11 +840,4 @@ void setup() {
 	tft.setCursor(DISPLAY_WIDTH-(DISPLAY_WIDTH- BOARD_SIZE),0);
 	dispCurrentPlayer();
 	dispTips("select");
-	bool p1_kingMoved=0;
-	bool p1_leftRookmoved=0;
-	bool p1_rightRookmoved=0;
-
-	bool p2_kingMoved=0;
-	bool p2_leftRookmoved=0;
-	bool p2_rightRookmoved=0;
 }
