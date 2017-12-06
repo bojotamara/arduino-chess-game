@@ -658,7 +658,21 @@ void moveMode() {
 
 			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
 
-			if (valid && !checkWhite) {
+			bool specialcase = checkSpecialcases(selectedX,selectedY,pieceToMove);
+			Serial.print("value of boolean: "); Serial.println(specialcase);
+
+			if (specialcase && !checkWhite){
+				//if a special case already happened, that function took care of
+				//moving the pieces already
+				
+				//clear the check message
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
+				currentplayer=2;
+				break;
+			}
+
+
+			else if (valid && !checkWhite) {
 				//move is valid so move the piece
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 2;
@@ -693,7 +707,19 @@ void moveMode() {
 
 			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
 
-			if (valid && !checkBlack) {
+			bool specialcase = checkSpecialcases(selectedX,selectedY,pieceToMove);
+
+			if (specialcase && !checkBlack){
+				//if a special case already happened, that function took care of
+				//moving the pieces already
+
+				//clear the check message
+				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
+				currentplayer=1;
+				break;
+			}
+
+			else if (valid && !checkBlack) {
 				movePiece(chosenX,chosenY,pieceToMove);
 				currentplayer = 1;
 
