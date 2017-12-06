@@ -10,11 +10,12 @@
 //keeps track of current player
 //1 is player 1, and 2 is player 2
 int currentplayer=1;
+int gameover = 0;
 
 int main() {
 	setup();
 
-	while(true) {
+	while(gameover == 0) {
 
 		scroll();
 
@@ -26,8 +27,11 @@ int main() {
 					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
-					dispCurrentPlayer(); //updates sidemenu
-					dispTips("select");
+					if (gameover == 0 ) {
+						dispCurrentPlayer(); //updates sidemenu
+						dispTips("select");
+					}
+
 				}
 				break;
 
@@ -36,14 +40,18 @@ int main() {
 					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 					delay(100);
 					moveMode();
-					dispCurrentPlayer();
-					dispTips("select");
+					if (gameover == 0 ) {
+						dispCurrentPlayer(); //updates sidemenu
+						dispTips("select");
+					}
 				}
 				break;
 
 		}
 
 	}
+
+	endGame(gameover);
 
 	Serial.end();
 	return 0;
