@@ -608,6 +608,30 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	board[selectedY][selectedX] = pieceToMove;
 	emptySquare(oldx,oldy);
 	drawPiece(selectedX,selectedY,pieceToMove);
+
+	//keeps track of moved pieces that determine if castling is allowed
+	if(pieceToMove==W_ROOK){
+		if(oldx==0 && oldy==7){
+			p1_leftRookmoved=1;
+		}
+		else if(oldx==7 && oldy==7){
+			p1_rightRookmoved=1;
+		}
+	}
+	else if(pieceToMove==B_ROOK){
+		if(oldx==0 && oldy==0){
+			p2_leftRookmoved=1;
+		}
+		else if(oldx==7 && oldy==0){
+			p2_rightRookmoved=1;
+		}
+	}
+	else if(pieceToMove==W_KING){
+		p1_kingMoved=1;
+	}
+	else if(pieceToMove==B_KING){
+		p2_kingMoved=1;
+	}
 }
 
 void moveMode() {
@@ -669,7 +693,7 @@ void moveMode() {
 			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
 
 			bool specialcase = checkSpecialcases(selectedX,selectedY,pieceToMove);
-			
+
 			if (specialcase && !checkWhite){
 				//if a special case already happened, that function took care of
 				//moving the pieces already
