@@ -637,6 +637,14 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	else if(pieceToMove==B_KING){
 		p2_kingMoved=1;
 	}
+
+	//keeps track of pawns to determine if en passant is allowed
+	else if (pieceToMove==W_PAWN && selectedY>2) {
+		p1_pawn2spaces[oldx]=0;
+	}
+	else if (pieceToMove==B_PAWN && selectedY<6) {
+		p2_pawn2spaces[oldx]=0;
+	}
 }
 
 void moveMode() {
