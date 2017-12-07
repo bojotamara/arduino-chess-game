@@ -123,6 +123,11 @@ bool p1_rightRookmoved=0;
 bool p2_kingMoved=0;
 bool p2_leftRookmoved=0;
 bool p2_rightRookmoved=0;
+
+//en passant
+bool p1_pawn2spaces[9]={0};
+bool p2_pawn2spaces[9]={0};
+
 /*
 ================================================================================
 /*
@@ -489,6 +494,18 @@ void dispTips(String tip){
     tft.setCursor(BOARD_SIZE+7,200);
     tft.println("Check!");
    }
+
+	 else if(tip == "enpassant"){
+ 		tft.println("Hon Hon Hon");
+ 		tft.setCursor(BOARD_SIZE+5,70);
+ 		tft.println("someone");
+ 		tft.setCursor(BOARD_SIZE+5,80);
+ 		tft.println("knows the");
+ 		tft.setCursor(BOARD_SIZE+5,90);
+ 		tft.println("en passant");
+ 		tft.setCursor(BOARD_SIZE+5,100);
+ 		tft.println("maneuver!");
+ 	}	 
 }
 
 /*
@@ -631,6 +648,14 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	else if(pieceToMove==B_KING){
 		p2_kingMoved=1;
 	}
+
+	//keeps track of pawns to determine if en passant is allowed
+	// else if (pieceToMove==W_PAWN && selectedY>2) {
+	// 	p1_pawn2spaces[oldx]=0;
+	// }
+	// else if (pieceToMove==B_PAWN && selectedY<6) {
+	// 	p2_pawn2spaces[oldx]=0;
+	// }
 }
 
 /*
@@ -726,6 +751,10 @@ void moveMode() {
 				//clear the check message
 				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
 
+				//update enpassant array
+				if(p2_pawn2spaces[8]){
+					memset(p2_pawn2spaces,0,sizeof(p2_pawn2spaces));
+				}
 				//end the move
 				break;
 			}
@@ -771,6 +800,11 @@ void moveMode() {
 
 				//clear the check message
 				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
+
+				//update enpassant array
+				if(p1_pawn2spaces[8]){
+					memset(p1_pawn2spaces,0,sizeof(p1_pawn2spaces));
+				}
 				//end the move
 				break;
 			}

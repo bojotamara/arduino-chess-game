@@ -19,6 +19,14 @@
 #define B_KING -5
 #define B_QUEEN -6
 
+void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
+  //function based on movePiece in chessfunctions.cpp but modified to
+  //work for the purpose of castling and other special functions
+  	board[oldy][oldx] = EMPTY;
+  	board[y][x] = piece;
+  	emptySquare(oldx,oldy);
+  	drawPiece(x,y,piece);
+}
 
 void promote_to_Queen(int x, int y){
   switch(currentplayer){
@@ -36,17 +44,53 @@ void promote_to_Queen(int x, int y){
   }
 }
 
-void en_passant(){
-  ;//TODO
-}
+bool en_passant(int x, int y){
+  switch (currentplayer){
+    case 1:
+      if(chosenY==3){//white can only do this capture if the pawn itself is on y=3
+        //check if enemy pawn is beside and it has moved for the first time
+        if(y==2 && x==chosenX-1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x]){
+          if(board[y][x]==EMPTY){
+            specialmovepiece(chosenX,chosenY,x,y,W_PAWN);
+            board[chosenY][x]=EMPTY;
+            emptySquare(x,chosenY);
+            return 1;
+          }
+        }
+        else if(y==2 && x==chosenX+1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x]){
+          if(board[y][x]==EMPTY){
+            specialmovepiece(chosenX,chosenY,x,y,W_PAWN);
+            board[chosenY][x]=EMPTY;
+            emptySquare(x,chosenY);
+            return 1;
+          }
+        }
+      }
+    break;
 
-void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
-  //function based on movePiece in chessfunctions.cpp but modified to
-  //work for the purpose of castling and other special functions
-  	board[oldy][oldx] = EMPTY;
-  	board[y][x] = piece;
-  	emptySquare(oldx,oldy);
-  	drawPiece(x,y,piece);
+    case 2:
+      if(chosenY==4){//black can only do this capture if the pawn itself is on y=4
+        //check if enemy pawn is beside and it has moved for the first time
+        if(y==5 && x==chosenX-1 && board[chosenY][x]==W_PAWN && p1_pawn2spaces[x]){
+          if(board[y][x]==EMPTY){
+            specialmovepiece(chosenX,chosenY,x,y,B_PAWN);
+            board[chosenY][x]=EMPTY;
+            emptySquare(x,chosenY);
+            return 1;
+          }
+        }
+        else if(y==5 && x==chosenX+1 && board[chosenY][x]==W_PAWN && p1_pawn2spaces[x]){
+          if(board[y][x]==EMPTY){
+            specialmovepiece(chosenX,chosenY,x,y,B_PAWN);
+            board[chosenY][x]=EMPTY;
+            emptySquare(x,chosenY);
+            return 1;
+          }
+        }
+      }
+    break;
+  }
+  return 0;
 }
 
 bool castling(int x, int y){
@@ -130,6 +174,11 @@ bool checkSpecialcases(int x, int y, int piece){
         delay(1000);
         return 1;
       }
+      else if(en_passant(x,y)){
+        dispTips("enpassant");
+        delay(2000);
+        return 1;
+      }
     break;
 
     case B_PAWN:
@@ -137,6 +186,11 @@ bool checkSpecialcases(int x, int y, int piece){
         promote_to_Queen(x,y);
         dispTips("promotion");
         delay(1000);
+        return 1;
+      }
+      else if(en_passant(x,y)){
+        dispTips("enpassant");
+        delay(2000);
         return 1;
       }
     break;
@@ -156,10 +210,6 @@ bool checkSpecialcases(int x, int y, int piece){
         return 1;
       }
     break;
-
-    // case B_KING:
-    // break;
-
   }
   return 0;
 }
