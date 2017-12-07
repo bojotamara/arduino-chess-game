@@ -175,6 +175,8 @@ bool checkSpecialcases(int x, int y, int piece){
         return 1;
       }
       else if(en_passant(x,y)){
+        dispTips("enpassant");
+        delay(2000);
         return 1;
       }
     break;
@@ -187,6 +189,8 @@ bool checkSpecialcases(int x, int y, int piece){
         return 1;
       }
       else if(en_passant(x,y)){
+        dispTips("enpassant");
+        delay(2000);
         return 1;
       }
     break;

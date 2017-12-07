@@ -495,6 +495,18 @@ void dispTips(String tip){
     tft.setCursor(BOARD_SIZE+7,200);
     tft.println("Check!");
    }
+
+	 else if(tip == "enpassant"){
+ 		tft.println("Hon Hon Hon");
+ 		tft.setCursor(BOARD_SIZE+5,70);
+ 		tft.println("someone");
+ 		tft.setCursor(BOARD_SIZE+5,80);
+ 		tft.println("knows the");
+ 		tft.setCursor(BOARD_SIZE+5,90);
+ 		tft.println("en passant");
+ 		tft.setCursor(BOARD_SIZE+5,100);
+ 		tft.println("maneuver!");
+ 	}	 
 }
 
 /*
