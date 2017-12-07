@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "chessfunctions.h"
 #include "validmoves.h"
+#include "specialcases.h"
 
 #define EMPTY 0
 
@@ -25,7 +26,7 @@ void promote_to_Queen(int x, int y){
     case 1:
       board[y][x] = W_QUEEN;
       drawPiece(x,y,W_QUEEN);
-      Serial.print("Position: "); Serial.print(x); Serial.print(" "); Serial.println(y);
+      //Serial.print("Position: "); Serial.print(x); Serial.print(" "); Serial.println(y);
     break;
 
     case 2:
@@ -39,17 +40,88 @@ void en_passant(){
   ;//TODO
 }
 
-void castling(){
-  ;
+void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
+  //function based on movePiece in chessfunctions.cpp but modified to
+  //work for the purpose of castling and other special functions
+  	board[oldy][oldx] = EMPTY;
+  	board[y][x] = piece;
+  	emptySquare(oldx,oldy);
+  	drawPiece(x,y,piece);
+}
+
+bool castling(int x, int y){
+  //castling will be handled in a weird way.
+  //If the user wishes to castle, he/she must select the king, and then
+  //highlight the rook to be castled with. If this is possible, the switch will
+  //happen automatically
+
+  // Serial.print(x);Serial.print(" "); Serial.print(y);
+  // Serial.println(p1_leftRookmoved);
+  // Serial.println();
+
+  switch (currentplayer){
+    case 1:
+      if ( x==0 && y==7 && !p1_leftRookmoved && !p1_kingMoved ){//left rook
+        if(board[y][3]==EMPTY && board[y][2]==EMPTY && board[y][1] == EMPTY){
+          if(!checkOnWhite(W_KING,3,y) && !checkOnWhite(W_KING,2,y) && !checkOnWhite(W_KING,4,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,7,2,7,W_KING);
+            specialmovepiece(0,7,3,7,W_ROOK);
+            return 1;
+          }
+        }
+      }
+      else if ( x==7 && y==7 && !p1_rightRookmoved && !p1_kingMoved ){//right rook
+        if(board[y][5]==EMPTY && board[y][6]==EMPTY){
+          if(!checkOnWhite(W_KING,4,y) && !checkOnWhite(W_KING,5,y) && !checkOnWhite(W_KING,6,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,7,6,7,W_KING);
+            specialmovepiece(7,7,5,7,W_ROOK);
+            return 1;
+          }
+        }
+      }
+    break;
+
+    case 2:
+      if ( x==0 && y==0 && !p2_leftRookmoved && !p2_kingMoved ){//left rook
+        if(board[y][2]==EMPTY && board[y][3]==EMPTY && board[y][1] == EMPTY){
+          if(!checkOnBlack(B_KING,2,y) && !checkOnBlack(B_KING,3,y) && !checkOnBlack(B_KING,4,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,0,2,0,B_KING);
+            specialmovepiece(0,0,3,0,B_ROOK);
+            return 1;
+          }
+
+        }
+      }
+      else if ( x==7 && y==0 && !p2_rightRookmoved && !p2_kingMoved ){//right rook
+        if(board[y][5]==EMPTY && board[y][6]==EMPTY){
+          if(!checkOnBlack(B_KING,4,y) && !checkOnBlack(B_KING,5,y) && !checkOnBlack(B_KING,6,y)){
+            //need to check if king would be in check along the squares
+            specialmovepiece(4,0,6,0,B_KING);
+            specialmovepiece(7,0,5,0,B_ROOK);
+            return 1;
+          }
+        }
+      }
+    break;
+  }
+
+
+  return 0;
 }
 
 bool checkSpecialcases(int x, int y, int piece){
+  //input args x,y are the square that the piece will be moved to
+
   //returns a boolean, to let function in chessfunctions.cpp know that
   //the movment of pieces has already been taken care of here.
 
   // Serial.print(piece); Serial.print(" "); Serial.print(x);
   // Serial.print(" "); Serial.println(y);
   // Serial.println();
+
   switch (piece){
     case W_PAWN:
       if(y==0){
@@ -68,6 +140,26 @@ bool checkSpecialcases(int x, int y, int piece){
         return 1;
       }
     break;
+
+    case W_KING:
+      if(castling(x,y)){
+        dispTips("castled");
+        delay(2000);
+        return 1;
+      }
+    break;
+
+    case B_KING:
+      if(castling(x,y)){
+        dispTips("castled");
+        delay(2000);
+        return 1;
+      }
+    break;
+
+    // case B_KING:
+    // break;
+
   }
   return 0;
 }

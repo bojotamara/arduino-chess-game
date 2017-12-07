@@ -15,6 +15,6 @@ void promote_to_Queen(int x, int y);
 
 bool checkSpecialcases(int x, int y, int piece);
 
-void castling();
+bool castling(int x, int y);
 
 #endif
