@@ -116,6 +116,14 @@ int selectedX = 0;
 int oldSelectedX;
 int chosenX=10;
 int chosenY=10;
+
+//castling
+bool p1_kingMoved=0;
+bool p1_leftRookmoved=0;
+bool p1_rightRookmoved=0;
+bool p2_kingMoved=0;
+bool p2_leftRookmoved=0;
+bool p2_rightRookmoved=0;
 /*
 ================================================================================
 /*
@@ -469,7 +477,13 @@ void dispTips(String tip){
 
 	}
 
-  if (tip == "check") {
+	else if(tip == "castled"){
+		tft.println("You have");
+		tft.setCursor(BOARD_SIZE+5,70);
+		tft.println("castled!");
+	}
+
+  else if (tip == "check") {
     tft.setTextSize(2);
     tft.setTextColor(RED,BLACK);
 
@@ -595,9 +609,29 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	emptySquare(oldx,oldy);
 	drawPiece(selectedX,selectedY,pieceToMove);
 
-	//check special cases
-	//checkSpecialcases(selectedX, selectedY,pieceToMove);
-
+	//keeps track of moved pieces that determine if castling is allowed
+	if(pieceToMove==W_ROOK){
+		if(oldx==0 && oldy==7){
+			p1_leftRookmoved=1;
+		}
+		else if(oldx==7 && oldy==7){
+			p1_rightRookmoved=1;
+		}
+	}
+	else if(pieceToMove==B_ROOK){
+		if(oldx==0 && oldy==0){
+			p2_leftRookmoved=1;
+		}
+		else if(oldx==7 && oldy==0){
+			p2_rightRookmoved=1;
+		}
+	}
+	else if(pieceToMove==W_KING){
+		p1_kingMoved=1;
+	}
+	else if(pieceToMove==B_KING){
+		p2_kingMoved=1;
+	}
 }
 
 void moveMode() {
@@ -671,7 +705,6 @@ void moveMode() {
 			bool valid = validateMove(pieceToMove,selectedX,selectedY,board) && checkObstruction(pieceToMove,selectedX,selectedY,board);
 
 			bool specialcase = checkSpecialcases(selectedX,selectedY,pieceToMove);
-			Serial.print("value of boolean: "); Serial.println(specialcase);
 
 			if (specialcase && !checkWhite){
 				//if a special case already happened, that function took care of
