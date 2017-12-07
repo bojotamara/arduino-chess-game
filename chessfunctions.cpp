@@ -124,6 +124,11 @@ bool p1_rightRookmoved=0;
 bool p2_kingMoved=0;
 bool p2_leftRookmoved=0;
 bool p2_rightRookmoved=0;
+
+//en passant
+bool p1_pawn2spaces[8]={0};
+bool p2_pawn2spaces[8]={0};
+
 /*
 ================================================================================
 /*
