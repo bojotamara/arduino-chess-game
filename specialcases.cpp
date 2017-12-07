@@ -19,6 +19,14 @@
 #define B_KING -5
 #define B_QUEEN -6
 
+void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
+  //function based on movePiece in chessfunctions.cpp but modified to
+  //work for the purpose of castling and other special functions
+  	board[oldy][oldx] = EMPTY;
+  	board[y][x] = piece;
+  	emptySquare(oldx,oldy);
+  	drawPiece(x,y,piece);
+}
 
 void promote_to_Queen(int x, int y){
   switch(currentplayer){
@@ -36,16 +44,17 @@ void promote_to_Queen(int x, int y){
   }
 }
 
-void en_passant(){
+bool en_passant(int x, int y){
   switch (currentplayer){
     case 1:
       if(chosenY==3){//white can only do this capture if the pawn itself is on y=3
         //check if enemy pawn is beside and it has moved for the first time
-        if(y==chosenY-1 && x==chosenX-1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x]){
+        if(y==chosenY-1 && x==chosenX-1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x-1]){
           if(board[y][x]==EMPTY){
-            specialmovepiece(x,y,chosenY-1,chosenX-1,W_PAWN);
+            specialmovepiece(chosenX,chosenY,x,y,W_PAWN);
             board[chosenY][x]=EMPTY;
             emptySquare(x,chosenY);
+            return 1;
           }
         }
       }
@@ -54,15 +63,7 @@ void en_passant(){
     case 2:
     break;
   }
-}
-
-void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
-  //function based on movePiece in chessfunctions.cpp but modified to
-  //work for the purpose of castling and other special functions
-  	board[oldy][oldx] = EMPTY;
-  	board[y][x] = piece;
-  	emptySquare(oldx,oldy);
-  	drawPiece(x,y,piece);
+  return 0;
 }
 
 bool castling(int x, int y){
@@ -149,7 +150,6 @@ bool checkSpecialcases(int x, int y, int piece){
       else if(en_passant(x,y)){
         return 1;
       }
-      }
     break;
 
     case B_PAWN:
@@ -176,10 +176,6 @@ bool checkSpecialcases(int x, int y, int piece){
         return 1;
       }
     break;
-
-    // case B_KING:
-    // break;
-
   }
   return 0;
 }

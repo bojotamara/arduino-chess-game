@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "chessfunctions.h"
+#include "specialcases.h"
 
 #define EMPTY 0
 
