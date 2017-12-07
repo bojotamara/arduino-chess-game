@@ -62,7 +62,7 @@ bool castling(int x, int y){
   switch (currentplayer){
     case 1:
       if ( x==0 && y==7 && !p1_leftRookmoved && !p1_kingMoved ){//left rook
-        if(board[y][3]==EMPTY && board[y][2]==EMPTY){
+        if(board[y][3]==EMPTY && board[y][2]==EMPTY && board[y][1] == EMPTY){
           if(!checkOnWhite(W_KING,3,y) && !checkOnWhite(W_KING,2,y) && !checkOnWhite(W_KING,4,y)){
             //need to check if king would be in check along the squares
             specialmovepiece(4,7,2,7,W_KING);
@@ -85,7 +85,7 @@ bool castling(int x, int y){
 
     case 2:
       if ( x==0 && y==0 && !p2_leftRookmoved && !p2_kingMoved ){//left rook
-        if(board[y][2]==EMPTY && board[y][3]==EMPTY){
+        if(board[y][2]==EMPTY && board[y][3]==EMPTY && board[y][1] == EMPTY){
           if(!checkOnBlack(B_KING,2,y) && !checkOnBlack(B_KING,3,y) && !checkOnBlack(B_KING,4,y)){
             //need to check if king would be in check along the squares
             specialmovepiece(4,0,2,0,B_KING);
