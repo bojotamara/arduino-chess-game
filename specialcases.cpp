@@ -69,6 +69,25 @@ bool en_passant(int x, int y){
     break;
 
     case 2:
+      if(chosenY==4){//black can only do this capture if the pawn itself is on y=4
+        //check if enemy pawn is beside and it has moved for the first time
+        if(y==5 && x==chosenX-1 && board[chosenY][x]==W_PAWN && p1_pawn2spaces[x]){
+          if(board[y][x]==EMPTY){
+            specialmovepiece(chosenX,chosenY,x,y,B_PAWN);
+            board[chosenY][x]=EMPTY;
+            emptySquare(x,chosenY);
+            return 1;
+          }
+        }
+        else if(y==5 && x==chosenX+1 && board[chosenY][x]==W_PAWN && p1_pawn2spaces[x]){
+          if(board[y][x]==EMPTY){
+            specialmovepiece(chosenX,chosenY,x,y,B_PAWN);
+            board[chosenY][x]=EMPTY;
+            emptySquare(x,chosenY);
+            return 1;
+          }
+        }
+      }
     break;
   }
   return 0;
@@ -165,6 +184,9 @@ bool checkSpecialcases(int x, int y, int piece){
         promote_to_Queen(x,y);
         dispTips("promotion");
         delay(1000);
+        return 1;
+      }
+      else if(en_passant(x,y)){
         return 1;
       }
     break;
