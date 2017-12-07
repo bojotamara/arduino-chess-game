@@ -212,6 +212,10 @@ bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 	return valid;
 }
 
+/*
+Function that returns a boolean based on whether or not a move is being
+obstructed by an opposing piece
+*/
 bool checkObstruction(int piece, int selX, int selY, int boardtouse[][8]) {
 	bool valid = true;
 
@@ -328,8 +332,17 @@ void unhighlightValid(int pieceToMove){
   }
 }
 
+/*
+Function that returns a boolean based on whether the black king is in check
+If you specify the parameters, it takes that piece and moves it to the
+specified coordinates in a 'fakeboard' to simulate a move that may or may not
+be in check
+*/
 bool checkOnBlack(int piece, int selX, int selY) {
 	bool check = false;
+
+	// global variables that we are going to change in this simulation, but want to
+	// preserve when we leave the function
 	int actualChosenX = chosenX;
 	int actualChosenY = chosenY;
 	int actualplayer = currentplayer;
@@ -347,6 +360,7 @@ bool checkOnBlack(int piece, int selX, int selY) {
 	//in order for the checks to work, we have to 'fake' the current player
 	//and the chosen for the appropriate situation
 	currentplayer = 1;
+
 	//iterate through every square to find pieces
 	for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
@@ -381,9 +395,17 @@ bool checkOnBlack(int piece, int selX, int selY) {
 
 }
 
+/*
+Function that returns a boolean based on whether the white king is in check
+If you specify the parameters, it takes that piece and moves it to the
+specified coordinates in a 'fakeboard' to simulate a move that may or may not
+be in check
+*/
 bool checkOnWhite(int piece, int selX, int selY) {
 	bool check = false;
 
+	// global variables that we are going to change in this simulation, but want to
+	// preserve when we leave the function
 	int actualChosenX = chosenX;
 	int actualChosenY = chosenY;
 	int actualplayer = currentplayer;
@@ -401,6 +423,7 @@ bool checkOnWhite(int piece, int selX, int selY) {
 	//in order for the checks to work, we have to 'fake' the current player
 	//and the chosen for the appropriate situation
 	currentplayer = 2;
+
 	//iterate through every square to find pieces
 	for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
@@ -413,7 +436,7 @@ bool checkOnWhite(int piece, int selX, int selY) {
 						chosenX = i;
 						chosenY = j;
 
-						//if move is valid and targetting the king
+						//if move is valid and targetting the white king
 			      if (validateMove(fakeboard[j][i],a,b,fakeboard) && checkObstruction(fakeboard[j][i],a,b,fakeboard) && fakeboard[b][a] == W_KING ){
 							check = true;
 			      }
@@ -436,6 +459,8 @@ bool checkOnWhite(int piece, int selX, int selY) {
 bool checkmate(String color) {
 	bool checkmate = true;
 
+	// global variables that we are going to change in this simulation, but want to
+	// preserve when we leave the function
 	int actualChosenX = chosenX;
 	int actualChosenY = chosenY;
 	int actualplayer = currentplayer;
@@ -446,6 +471,7 @@ bool checkmate(String color) {
 
 		currentplayer = 1;
 
+		// iterate to find pieces
 		for (int x=0; x < 8; x++ ) {
 			for (int y=0; y<8; y++) {
 
@@ -458,7 +484,7 @@ bool checkmate(String color) {
 					chosenX = x;
 					chosenY = y;
 
-
+					// perform 'moves' on every possible square
 					for (int a=0; a < 8; a++) {
 						for (int b = 0; b < 8; b++) {
 

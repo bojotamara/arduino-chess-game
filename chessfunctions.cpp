@@ -17,6 +17,7 @@ LCD STUFF
 #define SD_CS 6
 #define DISPLAY_WIDTH  320
 #define DISPLAY_HEIGHT 240
+#define BOARD_SIZE 240
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
@@ -106,8 +107,6 @@ MATRIX STUFF FOR CHESSBOARD
 
 //2-D array that represents the board
 int board [8][8];
-
-#define BOARD_SIZE 240
 
 // hold the position of square selected
 int selectedY = 0;
@@ -634,13 +633,17 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	}
 }
 
+/*
+Once a piece is selected, player enters this mode to actually move the piece
+where they want
+*/
 void moveMode() {
 	bool checkBlack;
 	bool checkWhite;
 
 	int pieceToMove = board[selectedY][selectedX];
+
 	if (pieceToMove == EMPTY) {
-		//tft.println("Can't move empty square");
 		dispTips("emptysquare");
 		return;
 	}
@@ -650,7 +653,6 @@ void moveMode() {
 		//flash square red to let player know that square can't be moved
 		//highlightSquare(selectedX,selectedY,RED);
 		dispTips("wrongpiece");
-		//unhighlightSquare(selectedX,selectedY);
 		return;
 	}
 	else if (pieceToMove < 0 && currentplayer == 1) {
@@ -659,7 +661,6 @@ void moveMode() {
 		//flash square red to let player know that square can't be moved
 		//highlightSquare(selectedX,selectedY,RED);
 		dispTips("wrongpiece");
-		//unhighlightSquare(selectedX,selectedY);
 		return;
 	}
 	else{
@@ -679,19 +680,19 @@ void moveMode() {
 	while(true) {
 		scroll();
 
-
+		// show valid moves only when you're on the piece that you selected
 		if (selectedX == chosenX && selectedY == chosenY) {
-			//show valid moves
 			highlightValid(pieceToMove);
 			highlighted = true;
 		}
 
-		else if (highlighted ==true){
+		else if (highlighted == true ){
 			unhighlightValid(pieceToMove);
 			highlightSquare(selectedX,selectedY);
 			highlighted = false;
 		}
 
+		//player 1 selects a place to move
 		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
 			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 
@@ -739,7 +740,7 @@ void moveMode() {
 			}
 		}
 
-
+		// player 2 selects where they want to move
 		else if (currentplayer ==2 && digitalRead(JOY2_SEL)==0){
 			while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 
@@ -788,14 +789,14 @@ void moveMode() {
 	}
 
 	unhighlightValid(pieceToMove);
-	// set chosen piece to nothing
 	highlightSquare(selectedX,selectedY);
+	// set chosen piece to nothing
 	chosenX = 10;
 	chosenY = 10;
 
 
 
-
+	//look for a checkmate for a potential end game
 	if (checkOnWhite()) {
 		if (checkmate("white")) {
 			gameover = 2;
@@ -821,6 +822,10 @@ void moveMode() {
 
 }
 
+
+/*
+Stops the game and displays the winner
+*/
 void endGame( int player) {
 	unhighlightSquare(selectedX,selectedY);
 	tft.fillRect(BOARD_SIZE,0,DISPLAY_WIDTH-BOARD_SIZE,DISPLAY_HEIGHT,BLACK);

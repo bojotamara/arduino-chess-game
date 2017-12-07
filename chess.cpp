@@ -10,6 +10,7 @@
 //keeps track of current player
 //1 is player 1, and 2 is player 2
 int currentplayer=1;
+//0 is state when game is still going on
 int gameover = 0;
 
 int main() {
@@ -50,7 +51,7 @@ int main() {
 		}
 
 	}
-
+	
 	endGame(gameover);
 
 	Serial.end();
