@@ -5,9 +5,9 @@
 #include <Adafruit_ILI9341.h>
 #include "lcd_image.h"
 
-#include "chessfunctions.h"
-#include "validmoves.h"
-#include "specialcases.h"
+#include "chessfunctions.h" //contains global variables
+#include "validmoves.h"   //handles determining if a move is valid
+#include "specialcases.h" //handles special moves like castling
 /*
 ================================================================================
 LCD STUFF
@@ -208,7 +208,7 @@ void emptySquare(int squarex, int squarey) {
 
 /*
 Function that draws a specified piece onto a specified squarex and squarey,
-also uploading a different backgroud color based on the square
+also uploading a different background color based on the square
 */
 void drawPiece(int squarex, int squarey, int piecetype) {
 
@@ -368,6 +368,10 @@ void highlightSquare(int squarex, int squarey, uint16_t bordercolor) {
 
 }
 
+/*
+This function updates the sidemenu to let the players know
+whose turn it is
+*/
 void dispCurrentPlayer(){
 	tft.setCursor(BOARD_SIZE+8,8);
 	tft.setTextSize(6);
@@ -385,6 +389,11 @@ void dispCurrentPlayer(){
 	}
 }
 
+/*
+This function accepts input arguments, which allows us to display different
+contextual tips based on what is happening in the game, displayed on the
+side menu underneath the player indicator
+*/
 void dispTips(String tip){
 	//keep this I'm using it for checking boundaries when debugging
 	//tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,80,BROWN);
@@ -505,7 +514,7 @@ void dispTips(String tip){
  		tft.println("en passant");
  		tft.setCursor(BOARD_SIZE+5,100);
  		tft.println("maneuver!");
- 	}	 
+ 	}
 }
 
 /*
@@ -649,13 +658,6 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 		p2_kingMoved=1;
 	}
 
-	//keeps track of pawns to determine if en passant is allowed
-	// else if (pieceToMove==W_PAWN && selectedY>2) {
-	// 	p1_pawn2spaces[oldx]=0;
-	// }
-	// else if (pieceToMove==B_PAWN && selectedY<6) {
-	// 	p2_pawn2spaces[oldx]=0;
-	// }
 }
 
 /*
@@ -668,6 +670,7 @@ void moveMode() {
 
 	int pieceToMove = board[selectedY][selectedX];
 
+	//These contextual tips were the first ones added
 	if (pieceToMove == EMPTY) {
 		dispTips("emptysquare");
 		return;

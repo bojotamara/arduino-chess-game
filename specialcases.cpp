@@ -19,6 +19,11 @@
 #define B_KING -5
 #define B_QUEEN -6
 
+/*==============================================================================
+Functions in this file handle special cases for weird things that happen in
+the game, like promotion, castling, or en passant
+==============================================================================*/
+
 void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
   //function based on movePiece in chessfunctions.cpp but modified to
   //work for the purpose of castling and other special functions
@@ -29,6 +34,8 @@ void specialmovepiece(int oldx, int oldy, int x, int y, int piece){
 }
 
 void promote_to_Queen(int x, int y){
+  //this function assumes requrements for promotion have been met, and it does
+  //the move
   switch(currentplayer){
 
     case 1:
@@ -45,12 +52,15 @@ void promote_to_Queen(int x, int y){
 }
 
 bool en_passant(int x, int y){
+  //returns boolean 1 if the en passant capture is performed
+
   switch (currentplayer){
     case 1:
       if(chosenY==3){//white can only do this capture if the pawn itself is on y=3
         //check if enemy pawn is beside and it has moved for the first time
         if(y==2 && x==chosenX-1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x]){
           if(board[y][x]==EMPTY){
+            //do the move!
             specialmovepiece(chosenX,chosenY,x,y,W_PAWN);
             board[chosenY][x]=EMPTY;
             emptySquare(x,chosenY);
@@ -59,6 +69,7 @@ bool en_passant(int x, int y){
         }
         else if(y==2 && x==chosenX+1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x]){
           if(board[y][x]==EMPTY){
+            //do the move!
             specialmovepiece(chosenX,chosenY,x,y,W_PAWN);
             board[chosenY][x]=EMPTY;
             emptySquare(x,chosenY);
@@ -73,6 +84,7 @@ bool en_passant(int x, int y){
         //check if enemy pawn is beside and it has moved for the first time
         if(y==5 && x==chosenX-1 && board[chosenY][x]==W_PAWN && p1_pawn2spaces[x]){
           if(board[y][x]==EMPTY){
+            //do the move!
             specialmovepiece(chosenX,chosenY,x,y,B_PAWN);
             board[chosenY][x]=EMPTY;
             emptySquare(x,chosenY);
@@ -81,6 +93,7 @@ bool en_passant(int x, int y){
         }
         else if(y==5 && x==chosenX+1 && board[chosenY][x]==W_PAWN && p1_pawn2spaces[x]){
           if(board[y][x]==EMPTY){
+            //do the move!
             specialmovepiece(chosenX,chosenY,x,y,B_PAWN);
             board[chosenY][x]=EMPTY;
             emptySquare(x,chosenY);
@@ -90,11 +103,11 @@ bool en_passant(int x, int y){
       }
     break;
   }
-  return 0;
+  return 0; //requirements not met for en passant
 }
 
 bool castling(int x, int y){
-  //castling will be handled in a weird way.
+  //castling will be handled in a weirdly intuitive way.
   //If the user wishes to castle, he/she must select the king, and then
   //highlight the rook to be castled with. If this is possible, the switch will
   //happen automatically
@@ -153,7 +166,7 @@ bool castling(int x, int y){
   }
 
 
-  return 0;
+  return 0; //castling did not happen
 }
 
 bool checkSpecialcases(int x, int y, int piece){
@@ -211,5 +224,5 @@ bool checkSpecialcases(int x, int y, int piece){
       }
     break;
   }
-  return 0;
+  return 0; //no special cases happened
 }

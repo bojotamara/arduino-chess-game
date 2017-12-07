@@ -12,8 +12,8 @@ extern bool p2_rightRookmoved;
 extern bool p1_pawn2spaces[9];
 extern bool p2_pawn2spaces[9];
 //last index holds boolean which lets program know if the player has played
-//his/her turn
-
+//his/her turn. Other indices represent pawns, and the corresponding index is
+//changed to 1 if the player moved his/her pawn 2 spaces
 
 void promote_to_Queen(int x, int y);
 

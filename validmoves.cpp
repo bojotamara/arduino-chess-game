@@ -17,6 +17,7 @@
 #define B_BISHOP -4
 #define B_KING -5
 #define B_QUEEN -6
+//==============================================================================
 
 /*
 Function that returns a boolean based on whether or not a move is valid for
@@ -24,6 +25,8 @@ a specified piece
 */
 bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 	bool valid = false;
+	//this function validates moves for every chess piece, and returns a boolean
+	//if the move was valid
 
 	switch (piecetomove) {
 		//need to work on pawns moving 2 spaces on first turn, and leater en passant
@@ -316,6 +319,8 @@ bool checkObstruction(int piece, int selX, int selY, int boardtouse[][8]) {
 }
 
 void highlightValid(int pieceToMove){
+	//this function tests all possible squares by calling the validateMove function
+	//repeatedly
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
       //Serial.println(validateMove(pieceToMove, i, j));

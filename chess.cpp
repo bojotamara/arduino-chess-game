@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "chessfunctions.h"
 
+//pins for joystick button press
 #define JOY1_SEL   2
 #define JOY2_SEL   8
 
@@ -51,7 +52,7 @@ int main() {
 		}
 
 	}
-	
+
 	endGame(gameover);
 
 	Serial.end();

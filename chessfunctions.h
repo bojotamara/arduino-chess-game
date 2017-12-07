@@ -3,7 +3,9 @@
 
 extern int gameover;
 
+//keeps track of whose turn it is
 extern int currentplayer;
+
 //2-D array that represents the board
 extern int board [8][8];
 
