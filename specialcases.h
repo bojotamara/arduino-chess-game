@@ -19,4 +19,6 @@ bool checkSpecialcases(int x, int y, int piece);
 
 bool castling(int x, int y);
 
+bool en_passant(int x, int y);
+
 #endif

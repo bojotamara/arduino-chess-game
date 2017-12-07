@@ -36,6 +36,7 @@ bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 				//2 spaces at the beginning
 				else if (selY == chosenY - 2 && chosenY == 6 && boardtouse[selY+1][selX] == EMPTY) {
 					valid = true;
+					p1_pawn2spaces[selX]=1;//en_passant
 				}
 			}
 			//valid if diagonal, and pawn eats opponent
@@ -54,6 +55,7 @@ bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 				//2 spaces at the beginning
 				else if (selY == chosenY + 2 && chosenY == 1 && boardtouse[selY-1][selX] == EMPTY) {
 					valid = true;
+					p2_pawn2spaces[selX]=1;//en_passant
 				}
 			}
 			//valid if diagonal, and pawn eats opponent
