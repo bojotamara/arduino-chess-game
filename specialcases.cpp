@@ -49,7 +49,15 @@ bool en_passant(int x, int y){
     case 1:
       if(chosenY==3){//white can only do this capture if the pawn itself is on y=3
         //check if enemy pawn is beside and it has moved for the first time
-        if(y==chosenY-1 && x==chosenX-1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x-1]){
+        if(y==2 && x==chosenX-1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x]){
+          if(board[y][x]==EMPTY){
+            specialmovepiece(chosenX,chosenY,x,y,W_PAWN);
+            board[chosenY][x]=EMPTY;
+            emptySquare(x,chosenY);
+            return 1;
+          }
+        }
+        else if(y==2 && x==chosenX+1 && board[chosenY][x]==B_PAWN && p2_pawn2spaces[x]){
           if(board[y][x]==EMPTY){
             specialmovepiece(chosenX,chosenY,x,y,W_PAWN);
             board[chosenY][x]=EMPTY;

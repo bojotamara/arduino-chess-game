@@ -9,8 +9,10 @@ extern bool p2_kingMoved;
 extern bool p2_leftRookmoved;
 extern bool p2_rightRookmoved;
 
-extern bool p1_pawn2spaces[8];
-extern bool p2_pawn2spaces[8];
+extern bool p1_pawn2spaces[9];
+extern bool p2_pawn2spaces[9];
+//last index holds boolean which lets program know if the player has played
+//his/her turn
 
 
 void promote_to_Queen(int x, int y);

@@ -126,8 +126,8 @@ bool p2_leftRookmoved=0;
 bool p2_rightRookmoved=0;
 
 //en passant
-bool p1_pawn2spaces[8]={0};
-bool p2_pawn2spaces[8]={0};
+bool p1_pawn2spaces[9]={0};
+bool p2_pawn2spaces[9]={0};
 
 /*
 ================================================================================
@@ -639,12 +639,12 @@ void movePiece(int oldx, int oldy, int pieceToMove) {
 	}
 
 	//keeps track of pawns to determine if en passant is allowed
-	else if (pieceToMove==W_PAWN && selectedY>2) {
-		p1_pawn2spaces[oldx]=0;
-	}
-	else if (pieceToMove==B_PAWN && selectedY<6) {
-		p2_pawn2spaces[oldx]=0;
-	}
+	// else if (pieceToMove==W_PAWN && selectedY>2) {
+	// 	p1_pawn2spaces[oldx]=0;
+	// }
+	// else if (pieceToMove==B_PAWN && selectedY<6) {
+	// 	p2_pawn2spaces[oldx]=0;
+	// }
 }
 
 void moveMode() {
@@ -738,6 +738,10 @@ void moveMode() {
 				//clear the check message
 				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
 
+				//update enpassant array
+				if(p2_pawn2spaces[8]){
+					memset(p2_pawn2spaces,0,sizeof(p2_pawn2spaces));
+				}
 				//end the move
 				break;
 			}
@@ -783,6 +787,11 @@ void moveMode() {
 
 				//clear the check message
 				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
+
+				//update enpassant array
+				if(p1_pawn2spaces[8]){
+					memset(p1_pawn2spaces,0,sizeof(p1_pawn2spaces));
+				}
 				//end the move
 				break;
 			}
