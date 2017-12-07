@@ -640,11 +640,23 @@ void moveMode() {
 	highlightSquare(chosenX,chosenY,GREEN);
 	//green for valid square chosen
 
-	//show valid moves
-	highlightValid(pieceToMove);
+	bool highlighted;
 
 	while(true) {
 		scroll();
+
+
+		if (selectedX == chosenX && selectedY == chosenY) {
+			//show valid moves
+			highlightValid(pieceToMove);
+			highlighted = true;
+		}
+
+		else if (highlighted ==true){
+			unhighlightValid(pieceToMove);
+			highlightSquare(selectedX,selectedY);
+			highlighted = false;
+		}
 
 		if (currentplayer == 1 && digitalRead(JOY1_SEL)==0){
 			while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
@@ -664,7 +676,7 @@ void moveMode() {
 			if (specialcase && !checkWhite){
 				//if a special case already happened, that function took care of
 				//moving the pieces already
-				
+
 				//clear the check message
 				tft.fillRect(BOARD_SIZE,180,DISPLAY_WIDTH-BOARD_SIZE,240-180,BLACK);
 				currentplayer=2;
