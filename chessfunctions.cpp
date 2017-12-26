@@ -113,6 +113,8 @@ int selectedY = 0;
 int oldSelectedY;
 int selectedX = 0;
 int oldSelectedX;
+
+// holds position of piece you want to move
 int chosenX=10;
 int chosenY=10;
 
@@ -194,7 +196,9 @@ void drawArray() {
 	}
 }
 
-
+/*
+Function that clears the square of any pieces
+*/
 void emptySquare(int squarex, int squarey) {
 	int sqColor;
 	if ( (squarex % 2 !=0 && squarey % 2 == 0) || (squarex % 2 ==0 && squarey % 2 != 0) ) {
@@ -215,6 +219,8 @@ void drawPiece(int squarex, int squarey, int piecetype) {
 	lcd_image_t image;
 	bool isEmpty = false;
 
+	// based on the piece specified, and the square you want to draw it to
+	// a different image will be loaded
 	switch (piecetype) {
 		case EMPTY:
 			isEmpty = true;
@@ -342,12 +348,12 @@ void unhighlightSquare(int squarex, int squarey) {
 		sqColor = BEIGE;
 	}
 	tft.drawRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, sqColor);
-	//tft.fillRect( (BOARD_SIZE/8)*squarex , (BOARD_SIZE/8)*squarey , BOARD_SIZE/8, BOARD_SIZE/8, sqColor);
 }
 
 /* Highlights a square
 @param: The x and y index of the square you want to highlight
 				So unhighlightSquare(0,0) will highlight the top left square
+				Last parameter is optional.
 */
 void highlightSquare(int squarex, int squarey, uint16_t bordercolor) {
 	if (bordercolor == RED) {
@@ -369,8 +375,7 @@ void highlightSquare(int squarex, int squarey, uint16_t bordercolor) {
 }
 
 /*
-This function updates the sidemenu to let the players know
-whose turn it is
+This function updates the sidemenu to let the players know whose turn it is
 */
 void dispCurrentPlayer(){
 	tft.setCursor(BOARD_SIZE+8,8);
@@ -395,8 +400,6 @@ contextual tips based on what is happening in the game, displayed on the
 side menu underneath the player indicator
 */
 void dispTips(String tip){
-	//keep this I'm using it for checking boundaries when debugging
-	//tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,80,BROWN);
 	tft.fillRect(BOARD_SIZE,60,DISPLAY_WIDTH-BOARD_SIZE,120,BLACK);
 	tft.setCursor(BOARD_SIZE+5,60);
 	tft.setTextSize(1);
@@ -570,7 +573,7 @@ void scroll() {
 	oldSelectedX = selectedX;
 	int xVal, yVal;
 
-
+	// different joysticks control different players
 	switch (currentplayer){
 		case 1:
 			yVal = analogRead(JOY1_VERT);
@@ -605,13 +608,13 @@ void scroll() {
 
 	if (oldSelectedY != selectedY || oldSelectedX != selectedX) {
 		if (selectedX == chosenX && selectedY == chosenY) {
-			//
+			// don't rehighlight the piece you want to move
 		}
 		else {
 			highlightSquare(selectedX,selectedY);
 		}
 		if (oldSelectedX == chosenX && oldSelectedY == chosenY) {
-			//
+			// don't clear the highlighting of the piece you want to move
 		} else {
 			unhighlightSquare(oldSelectedX,oldSelectedY);
 		}
@@ -626,6 +629,8 @@ void scroll() {
 
 /*
 Function that moves a piece to the selected square, and updates the board array
+Relies on the global variables, selectedX and selectedY, to move the piece to
+that location
 */
 void movePiece(int oldx, int oldy, int pieceToMove) {
 
@@ -665,6 +670,7 @@ Once a piece is selected, player enters this mode to actually move the piece
 where they want
 */
 void moveMode() {
+	// keep track of who is in check (if anyone)
 	bool checkBlack;
 	bool checkWhite;
 
@@ -695,13 +701,11 @@ void moveMode() {
 		dispTips("move");
 	}
 
-
-
 	chosenX = selectedX;
 	chosenY = selectedY;
 
+	// the piece you're moving is now highlighted green
 	highlightSquare(chosenX,chosenY,GREEN);
-	//green for valid square chosen
 
 	bool highlighted;
 
@@ -836,6 +840,7 @@ void moveMode() {
 	//look for a checkmate for a potential end game
 	if (checkOnWhite()) {
 		if (checkmate("white")) {
+			//P2 wins
 			gameover = 2;
 		}
 		else {
@@ -845,17 +850,14 @@ void moveMode() {
 	}
 	else if (checkOnBlack()) {
 		if (checkmate("black")) {
+			//P1 wins
 			gameover = 1;
-
-
 		}
 		else {
 			dispTips("check");
 		}
 
 	}
-
-
 
 }
 
@@ -912,6 +914,7 @@ void setup() {
 
 	tft.setRotation(3);
 
+	// setup the board for the start of the game
 	drawBoard();
 	fillBoardArray();
 	drawArray();

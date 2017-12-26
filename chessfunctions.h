@@ -1,6 +1,7 @@
 #ifndef _CHESSFUNCTIONS_H
 #define _CHESSFUNCTIONS_H
 
+//keeps track of checkmates
 extern int gameover;
 
 //keeps track of whose turn it is

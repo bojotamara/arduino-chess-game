@@ -25,11 +25,8 @@ a specified piece
 */
 bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 	bool valid = false;
-	//this function validates moves for every chess piece, and returns a boolean
-	//if the move was valid
 
 	switch (piecetomove) {
-		//need to work on pawns moving 2 spaces on first turn, and leater en passant
 		case W_PAWN:
 			// valid if pawn is moved forward on an empty space
 			if (boardtouse[selY][selX] == EMPTY && selX == chosenX){
@@ -70,7 +67,6 @@ bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 			}
 			break;
 
-		//need to work on killing opponent, and checking for pieces blocking path
 		case W_ROOK:
 			//valid if moved horizontally or vertically but not both
 			if (selX==chosenX || selY==chosenY){
@@ -222,7 +218,7 @@ bool validateMove(int piecetomove, int selX, int selY, int boardtouse[][8]) {
 
 /*
 Function that returns a boolean based on whether or not a move is being
-obstructed by an opposing piece
+obstructed by another piece
 */
 bool checkObstruction(int piece, int selX, int selY, int boardtouse[][8]) {
 	bool valid = true;
@@ -323,7 +319,6 @@ void highlightValid(int pieceToMove){
 	//repeatedly
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
-      //Serial.println(validateMove(pieceToMove, i, j));
       if ( validateMove(pieceToMove,i,j,board) && checkObstruction(pieceToMove,i,j,board) ){
         highlightSquare(i,j,0x600F);
       }
@@ -332,9 +327,9 @@ void highlightValid(int pieceToMove){
 }
 
 void unhighlightValid(int pieceToMove){
+	// unhighlights squares highlighted by highlightValid
   for (int i=0; i<8; i++){
     for(int j=0; j<8; j++){
-      //Serial.println(validateMove(pieceToMove, i, j));
       if ( validateMove(pieceToMove,i,j,board) && checkObstruction(pieceToMove,i,j,board) ){
         unhighlightSquare(i,j);
       }
@@ -466,6 +461,10 @@ bool checkOnWhite(int piece, int selX, int selY) {
 
 }
 
+/*
+Function that checks if someone is in checkmate, and returns true if so.
+@param: "white" or "black" will check for a checkmate on the white or black king
+*/
 bool checkmate(String color) {
 	bool checkmate = true;
 
@@ -485,8 +484,6 @@ bool checkmate(String color) {
 		for (int x=0; x < 8; x++ ) {
 			for (int y=0; y<8; y++) {
 
-
-
 				//find the white pieces
 				if (board[y][x] > 0) {
 
@@ -498,7 +495,6 @@ bool checkmate(String color) {
 					for (int a=0; a < 8; a++) {
 						for (int b = 0; b < 8; b++) {
 
-
 							// there's no checkmate if a valid move exists thats not in check
 							if (validateMove(board[y][x],a,b,board) && checkObstruction(board[y][x],a,b,board) && !checkOnWhite(board[y][x],a,b)) {
 								checkmate = false;
@@ -507,36 +503,20 @@ bool checkmate(String color) {
 								chosenY = actualChosenY;
 								return checkmate;
 							}
-
-
-
 						}
 					}
-
-
-
-
-
 				}
-
-
-
-
 			}
 		}
-
-
 	}
 
 	else if (color == "black") {
 
-
 		currentplayer = 2;
 
+		//iterate through all the squares to find pieces
 		for (int x=0; x < 8; x++ ) {
 			for (int y=0; y<8; y++) {
-
-
 
 				//find the black pieces
 				if (board[y][x] < 0) {
@@ -545,10 +525,8 @@ bool checkmate(String color) {
 					chosenX = x;
 					chosenY = y;
 
-
 					for (int a=0; a < 8; a++) {
 						for (int b = 0; b < 8; b++) {
-
 
 							// there's no checkmate if a valid move exists thats not in check
 							if (validateMove(board[y][x],a,b,board) && checkObstruction(board[y][x],a,b,board) && !checkOnBlack(board[y][x],a,b)) {
@@ -559,28 +537,15 @@ bool checkmate(String color) {
 								return checkmate;
 							}
 
-
-
 						}
 					}
 
-
-
-
-
 				}
-
-
-
-
 			}
 		}
-
-
-
 	}
 
-
+	//revert the changes necessary for the checks
 	currentplayer = actualplayer;
 	chosenX = actualChosenX;
 	chosenY = actualChosenY;

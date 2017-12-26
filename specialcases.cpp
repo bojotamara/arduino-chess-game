@@ -112,10 +112,6 @@ bool castling(int x, int y){
   //highlight the rook to be castled with. If this is possible, the switch will
   //happen automatically
 
-  // Serial.print(x);Serial.print(" "); Serial.print(y);
-  // Serial.println(p1_leftRookmoved);
-  // Serial.println();
-
   switch (currentplayer){
     case 1:
       if ( x==0 && y==7 && !p1_leftRookmoved && !p1_kingMoved ){//left rook
@@ -174,10 +170,6 @@ bool checkSpecialcases(int x, int y, int piece){
 
   //returns a boolean, to let function in chessfunctions.cpp know that
   //the movment of pieces has already been taken care of here.
-
-  // Serial.print(piece); Serial.print(" "); Serial.print(x);
-  // Serial.print(" "); Serial.println(y);
-  // Serial.println();
 
   switch (piece){
     case W_PAWN:

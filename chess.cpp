@@ -1,6 +1,7 @@
 /*
 	Chess game final project
 */
+
 #include <Arduino.h>
 #include "chessfunctions.h"
 
@@ -28,6 +29,7 @@ int main() {
 				if (digitalRead(JOY1_SEL) == 0) {
 					while (digitalRead(JOY1_SEL) == LOW) { delay(10); }
 					delay(100);
+					// a piece is selected, now, move it somewhere
 					moveMode();
 					if (gameover == 0 ) {
 						dispCurrentPlayer(); //updates sidemenu
@@ -41,6 +43,7 @@ int main() {
 				if (digitalRead(JOY2_SEL) == 0) {
 					while (digitalRead(JOY2_SEL) == LOW) { delay(10); }
 					delay(100);
+					// a piece is selected, now, move it somewhere
 					moveMode();
 					if (gameover == 0 ) {
 						dispCurrentPlayer(); //updates sidemenu
