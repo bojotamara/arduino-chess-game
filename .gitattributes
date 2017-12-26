@@ -1,0 +1,1 @@
+Arduino-SD-files.img filter=lfs diff=lfs merge=lfs -text
