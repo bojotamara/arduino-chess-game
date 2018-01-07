@@ -3,7 +3,7 @@
 
 
 # CMPUT 274 Final Project - Chess Game
---------------------------------------------------------------------------------
+
 For our final project, we decided to make a player versus player implementation
 of chess on a single Arduino mega board. It includes all the essential rules
 for chess. A graphical representation of the board is displayed on the Arduino
@@ -19,7 +19,7 @@ ends the game and declares the winner.
 For more specific instructions on how to play, see 'Usage Instructions'.
 
 ## Accessories:
---------------------------------------------------------------------------------
+
 -1 x Arduino Mega Board
 -2 x SainSmart Joysticks
 -1 x Adafruit ILI9341 display
@@ -32,7 +32,7 @@ For more specific instructions on how to play, see 'Usage Instructions'.
     on the display.
 
 ## Wiring Instructions:
---------------------------------------------------------------------------------
+
 
 ### Player 1:
 Joystick |  Arduino
@@ -76,7 +76,7 @@ CD         |       NOT CONNECTED
 
 ![Wiring](/fritzing_files/arduinochess_bb.png)
 ## Usage Instructions:
---------------------------------------------------------------------------------
+
 Copy the 'icons' folder onto the SD card. Without this, pictures of the pieces
 can't be accessed and therefore the game can't be played. Right click the 'icons'
 folder and select copy, and then with the SD card inserted into your computer,
@@ -140,7 +140,7 @@ Special moves are not highlighted. You need to know when and where to
 move your pieces
 
 ## File Layout / Description:
----
+
 ##### chess.cpp:
 Has the main() function and is the main file.
 
@@ -167,7 +167,7 @@ This folder contains all the images of the chess piece and MUST be placed onto
 the SD card.
 
 ## Acknowledgments:
---------------------------------------------------------------------------------
+
 The images of the chess pieces were taken off of
 https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent
 and modified in Photoshop to have different background colors, so that they
