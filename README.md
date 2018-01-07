@@ -132,6 +132,8 @@ want to perform the maneuver with, and then select the space behind the opposing
 want to capture, to automatically perform the en passant maneuver.
 Refer to https://en.wikipedia.org/wiki/En_passant
 for valid criteria for an enpassant, if you are unfamiliar with this rule.
+
+
 ----
 ##### Note on special moves:
 Special moves are not highlighted. You need to know when and where to
