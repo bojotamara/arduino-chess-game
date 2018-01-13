@@ -27,9 +27,10 @@ For more specific instructions on how to play, see 'Usage Instructions'.
 
 ** Alternatively, if you only have access to one joystick. You can move it back
     and forth between the location of the wiring, to play.
+    
 ** REQUIRED SD card files are included in the folder, labelled 'icons'.
     Copy this folder to the root of the SD card, and put it in the SD card reader
-    on the display.
+    on the display, or check out the SD card image file.
 
 ## Wiring Instructions:
 
