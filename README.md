@@ -20,10 +20,10 @@ For more specific instructions on how to play, see 'Usage Instructions'.
 
 ## Accessories:
 
--1 x Arduino Mega Board
--2 x SainSmart Joysticks
--1 x Adafruit ILI9341 display
--1 x 8GB SD Card
+* 1 x Arduino Mega Board
+* 2 x SainSmart Joysticks
+* 1 x Adafruit ILI9341 display
+* 1 x 8GB SD Card
 
 ** Alternatively, if you only have access to one joystick. You can move it back
     and forth between the location of the wiring, to play.
